@@ -11,55 +11,63 @@
 // +----------------------------------------------------------------------
 // | github开源项目：https://github.com/zoujingli/Think.Admin
 // +----------------------------------------------------------------------
+use think\Route;
 
 /*  测试环境禁止操作路由绑定 */
-return false;
-think\Route::post([
-    'admin/index/pass'    => function () {
-        return json(['code' => 0, 'msg' => '测试环境禁修改用户密码！']);
-    },
-    'admin/user/pass'     => function () {
-        return json(['code' => 0, 'msg' => '测试环境禁修改用户密码！']);
-    },
-    'admin/config/index'  => function () {
-        return json(['code' => 0, 'msg' => '测试环境禁修改系统配置操作！']);
-    },
-    'admin/config/file'   => function () {
-        return json(['code' => 0, 'msg' => '测试环境禁修改文件配置操作！']);
-    },
-	'admin/menu/index'      => function () {
-        return json(['code' => 0, 'msg' => '测试环境禁排序菜单操作！']);
-    },
-    'admin/menu/add'      => function () {
-        return json(['code' => 0, 'msg' => '测试环境禁添加菜单操作！']);
-    },
-    'admin/menu/edit'     => function () {
-        return json(['code' => 0, 'msg' => '测试环境禁编辑菜单操作！']);
-    },
-    'admin/menu/forbid'   => function () {
-        return json(['code' => 0, 'msg' => '测试环境禁止禁用菜单操作！']);
-    },
-    'admin/menu/del'      => function () {
-        return json(['code' => 0, 'msg' => '测试环境禁止删除菜单操作！']);
-    },
-    'wechat/config/index' => function () {
-        return json(['code' => 0, 'msg' => '测试环境禁止修改微信配置操作！']);
-    },
-    'wechat/config/pay'   => function () {
-        return json(['code' => 0, 'msg' => '测试环境禁止修改微信支付操作！']);
-    },
-    'admin/node/save'     => function () {
-        return json(['code' => 0, 'msg' => '测试环境禁止修改节点数据操作！']);
-    },
-    'wechat/menu/edit'    => function () {
-        return json(['code' => 0, 'msg' => '测试环境禁止修改微信菜单操作！']);
-    },
-]);
-
-think\Route::get([
-    'wechat/menu/cancel' => function () {
-        return json(['code' => 0, 'msg' => '测试环境禁止删除微信菜单操作！']);
-    },
-]);
-
-return [];
+//think\Route::post([
+//    'admin/index/pass'    => function () {
+//        return json(['code' => 0, 'msg' => '测试环境禁修改用户密码！']);
+//    },
+//    'admin/user/pass'     => function () {
+//        return json(['code' => 0, 'msg' => '测试环境禁修改用户密码！']);
+//    },
+//    'admin/config/index'  => function () {
+//        return json(['code' => 0, 'msg' => '测试环境禁修改系统配置操作！']);
+//    },
+//    'admin/config/file'   => function () {
+//        return json(['code' => 0, 'msg' => '测试环境禁修改文件配置操作！']);
+//    },
+//	'admin/menu/index'      => function () {
+//        return json(['code' => 0, 'msg' => '测试环境禁排序菜单操作！']);
+//    },
+//    'admin/menu/add'      => function () {
+//        return json(['code' => 0, 'msg' => '测试环境禁添加菜单操作！']);
+//    },
+//    'admin/menu/edit'     => function () {
+//        return json(['code' => 0, 'msg' => '测试环境禁编辑菜单操作！']);
+//    },
+//    'admin/menu/forbid'   => function () {
+//        return json(['code' => 0, 'msg' => '测试环境禁止禁用菜单操作！']);
+//    },
+//    'admin/menu/del'      => function () {
+//        return json(['code' => 0, 'msg' => '测试环境禁止删除菜单操作！']);
+//    },
+//    'wechat/config/index' => function () {
+//        return json(['code' => 0, 'msg' => '测试环境禁止修改微信配置操作！']);
+//    },
+//    'wechat/config/pay'   => function () {
+//        return json(['code' => 0, 'msg' => '测试环境禁止修改微信支付操作！']);
+//    },
+//    'admin/node/save'     => function () {
+//        return json(['code' => 0, 'msg' => '测试环境禁止修改节点数据操作！']);
+//    },
+//    'wechat/menu/edit'    => function () {
+//        return json(['code' => 0, 'msg' => '测试环境禁止修改微信菜单操作！']);
+//    },
+//]);
+//
+//Route::get([
+//    'wechat/menu/cancel' => function () {
+//        return json(['code' => 0, 'msg' => '测试环境禁止删除微信菜单操作！']);
+//    },
+//]);
+Route::group('api', function () {
+    Route::rule('question/getQuestionType', 'api/Question/getQuestionType');
+    Route::rule('question/getRandQuestionList', 'api/Question/getRandQuestionList');
+    Route::rule('question/getQuestionList', 'api/Question/getQuestionList');
+    Route::rule('userexam/getUserIsEnd', 'api/Userexam/getUserIsEnd');
+    Route::rule('userexam/addUserAnswer', 'api/Userexam/addUserAnswer');
+    Route::rule('userexam/addUserRecord', 'api/Userexam/addUserRecord');
+    Route::rule('userexam/updateCancelExam', 'api/Userexam/updateCancelExam');
+    Route::miss('api/Info/nofound');
+});

@@ -69,5 +69,8 @@ Route::group('api', function () {
     Route::rule('userexam/addUserAnswer', 'api/Userexam/addUserAnswer');
     Route::rule('userexam/addUserRecord', 'api/Userexam/addUserRecord');
     Route::rule('userexam/updateCancelExam', 'api/Userexam/updateCancelExam');
+    Route::rule('map/getAllCity', 'api/Map/getAllCity');
+    Route::rule('map/updateUserCity', 'api/Map/updateUserCity');
+    Route::rule('map/getUserAllCity', 'api/Map/getUserAllCity');
     Route::miss('api/Info/nofound');
 });

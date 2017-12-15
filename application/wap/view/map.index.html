@@ -1,69 +1,105 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ECharts地图选择器</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="applicable-device" content="mobile">
+    <title>Map</title>
+    <script type="text/javascript" src="__WAP_STATIC__/js/map/js/lib/jquery.js"></script>
+    <script type="text/javascript" src="__WAP_STATIC__/js/map/js/lib/raphael-min.js"></script>
+    <script type="text/javascript" src="__WAP_STATIC__/js/map/js/res/chinaMapConfig.js"></script>
+    <script type="text/javascript" src="__WAP_STATIC__/js/map/js/map.js"></script>
+    <style type="text/css">
+        /* base */
+
+        html { background: #fff; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;height: 100%; }
+        body, ul, ol, dl, dd, h1, h2, h3, h4, h5, h6, p, form, fieldset, legend, input, textarea, select, button, th, td, div { margin: 0; padding: 0 }
+        button, input, select, textarea { font: 12px/1.5 tahoma, Helvetica, arial, \5b8b\4f53 }
+        input, select, textarea { font-size: 100% }
+        table { border-collapse: collapse; border-spacing: 0 }
+        th { text-align: inherit }
+        fieldset, img { border: 0 }
+        iframe { display: block }
+        ol, ul, li { list-style: none }
+        del { text-decoration: line-through }
+        ins, a { text-decoration: none }
+        a:focus { outline: none }
+        h1, h2, h3, h4, h5, h6 { font-size: 100% }
+        .clear { clear: both }
+        .clearfix:after { content: "."; display: block; height: 0; font-size: 0; clear: both; visibility: hidden }
+        .clearfix { zoom: 1 }
+        body{ height: 100%; background: url(__WAP_STATIC__/js/map/images/bg.png) center no-repeat;background-size: 100% 100%;}
+
+        #ChinaMap{margin: auto;}
+        .header{text-align: center;padding: 20px 0 0;}
+        .header p{color: #ddd;}
+        .header p span{font-size: 24px;color: #ff9800;margin: 0 5px;}
+        .city-list{padding-left: 20px;font-size: 12px;}
+        .city-list li{color: #ff9800;margin-bottom: 5px;}
+        .city-list li span{color: #ccc;}
+    </style>
 </head>
 <body>
-<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-<div id="main" style="height:400px"></div>
-<span id="wrong-message" style="color:red">当前选择：广州 </span>
-<script src="__WAP_STATIC__/js/echarts.js?ver={:date('ymd')}"></script>
-<script type="text/javascript">
-    // 路径配置
-    require.config({
-        paths: {
-            echarts: 'http://echarts.baidu.com/build/dist'
-        }
-    });
 
-    // 使用
-    require(
-        [
-            'echarts',
-            'echarts/chart/map' // 使用柱状图就加载bar模块，按需加载
-        ],
-        function (ec) {
-            // 基于准备好的dom，初始化echarts图表
-            var myChart = ec.init(document.getElementById('main'));
+<div class="header">
+    <p>踏足中国<span>{$vars.provice_count|default=0}</span>个省区，<span>{$vars.city_count|default=0}</span>个城市</p>
+    <p>超越了<span>{$vars.rate|default=200}%</span></p>
+</div>
 
-            option = {
-                tooltip : {
-                    trigger: 'item',
-                    formatter: '{b}'
-                },
-                series : [
-                    {
-                        name: '中国',
-                        type: 'map',
-                        mapType: 'china',
-                        selectedMode : 'multiple',
-                        itemStyle:{
-                            normal:{label:{show:true}},
-                            emphasis:{label:{show:true}}
-                        },
-                        data:[
-                            {name:'广东',selected:true}
-                        ]
-                    }
-                ]
-            };
-            var ecConfig = require('echarts/config');
-            myChart.on(ecConfig.EVENT.MAP_SELECTED, function (param){
-                var selected = param.selected;
-                var str = '当前选择： ';
-                for (var p in selected) {
-                    if (selected[p]) {
-                        str += p + ' ';
-                    }
-                }
-                document.getElementById('wrong-message').innerHTML = str;
-            })
-            // 为echarts对象加载数据
-            myChart.setOption(option);
-        }
-    );
+<div class="items" id="Item5">
+    <div class="itemCon">
+        <div id="HoverCallback" style="font-size:14px; color:red"></div>
+        <div id="ChinaMap"></div>
+    </div>
+</div>
+
+<div class="city-list">
+    <ul>
+        <li>
+            大城市：<span>{if isset($vars.hot)}{:implode(',', $vars.hot)}{/if}</span>
+        </li>
+        {volist name='$vars.provice_list' id='vo'}
+            <li>
+                {$vo.name}：{if isset($vo.city_list)}<span>{:implode(',', $vo.city_list)}</span>{/if}
+            </li>
+        {/volist}
+    </ul>
+</div>
+
+<script>
+    $(function(){
+        $('#ChinaMap').SVGMap({
+            mapName: 'china',
+            mapWidth: 320,
+            mapHeight: 320,
+            showTip:false,
+            stateData: {
+                // 'heilongjiang': {'stateInitColor': 7, 'baifenbi': 0.236},
+                // 'beijing': {'stateInitColor': 7},
+                // 'shanghai': {'stateInitColor': 7},
+                // 'tianjin': {'stateInitColor': 7},
+                // 'sichuan': {'stateInitColor': 7},
+                // 'shandong': {'stateInitColor': 7},
+                // 'shanxi': {'stateInitColor': 7},
+                // 'zhejiang': {'stateInitColor': 7},
+                // 'jiangshu': {'stateInitColor': 7},
+                // 'hunan': {'stateInitColor': 7},
+                // 'guizou': {'stateInitColor': 7},
+                // 'neimenggu': {'stateInitColor': 7},
+                // 'henan': {'stateInitColor': 7},
+                // 'gansu': {'stateInitColor': 7},
+                // 'ningxia': {'stateInitColor': 7},
+                // 'jilin': {'diabled': true}
+            },
+//            hoverCallback:function(stateData,obj){
+//                $('#HoverCallback1').html(stateData);
+//                $('#HoverCallback').html('hover:'+obj.name);
+//            }
+
+        });
+    })
 </script>
-</body>
+
 </body>
 </html>

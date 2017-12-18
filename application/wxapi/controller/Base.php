@@ -43,8 +43,8 @@ class Base extends Controller
                 'fileBucket'   => 'news',
                 'uploadFolder' => ''
             ],
-            'serverHost'         => 'https://www.yingshangyan.com',
-            'tunnelServerUrl'    => 'clhadr5w.qcloud.la',
+            'serverHost'         => 'www.yingshangyan.com',
+            'tunnelServerUrl'    => 'wss://clhadr5w.ws.qcloud.la/qcloud/ws',
             'tunnelSignatureKey' => '916065xuheng!!',
             'qcloudAppId'        => 1253981917,
             'qcloudSecretId'     => 'AKIDVpvmNj9fEYcQxEE3arsd8NN7bq0x3DVb',

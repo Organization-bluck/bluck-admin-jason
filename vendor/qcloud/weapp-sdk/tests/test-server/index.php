@@ -23,11 +23,11 @@ case 'POST /auth':
     require('./controllers/auth.php');
     break;
 
-case 'POST /tunnel/get/wsurl':
+case 'POST /get/wsurl':
     require('./controllers/tunnel-get-wsurl.php');
     break;
 
-case 'POST /tunnel/ws/push':
+case 'POST /ws/push':
     require('./controllers/tunnel-ws-push.php');
     break;
 

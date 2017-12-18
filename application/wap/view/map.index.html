@@ -9,6 +9,7 @@
     <script type="text/javascript" src="__WAP_STATIC__/js/map/js/lib/jquery.js"></script>
     <script type="text/javascript" src="__WAP_STATIC__/js/map/js/lib/raphael-min.js"></script>
     <script type="text/javascript" src="__WAP_STATIC__/js/map/js/res/chinaMapConfig.js"></script>
+    <script type="text/javascript" src="__WAP_STATIC__/js/map/js/color.js"></script>
     <script type="text/javascript" src="__WAP_STATIC__/js/map/js/map.js"></script>
     <style type="text/css">
         /* base */
@@ -29,7 +30,7 @@
         .clear { clear: both }
         .clearfix:after { content: "."; display: block; height: 0; font-size: 0; clear: both; visibility: hidden }
         .clearfix { zoom: 1 }
-        body{ height: 100%; background: url(__WAP_STATIC__/js/map/images/bg.png) center no-repeat;background-size: 100% 100%;}
+        body{ height: 100%; background: url(__WAP_STATIC__/js/map/images/bg.jpg) center no-repeat;background-size: 100% 100%;}
 
         #ChinaMap{margin: auto;}
         .header{text-align: center;padding: 20px 0 0;}
@@ -37,14 +38,14 @@
         .header p span{font-size: 24px;color: #ff9800;margin: 0 5px;}
         .city-list{padding-left: 20px;font-size: 12px;}
         .city-list li{color: #ff9800;margin-bottom: 5px;}
-        .city-list li span{color: #ccc;}
+        .city-list li span{color: #ccc;margin: 0 5px;}
     </style>
 </head>
 <body>
 
 <div class="header">
-    <p>踏足中国<span>{$vars.provice_count|default=0}</span>个省区，<span>{$vars.city_count|default=0}</span>个城市</p>
-    <p>超越了<span>{$vars.rate|default=200}%</span></p>
+    <p>踏足中国<span class="province-num">0</span>个省区，<span class="city-num">0</span>个城市</p>
+    <p>超越了<span class="percent">100%</span>的人</p>
 </div>
 
 <div class="items" id="Item5">
@@ -55,51 +56,46 @@
 </div>
 
 <div class="city-list">
-    <ul>
-        <li>
-            大城市：<span>{if isset($vars.hot)}{:implode(',', $vars.hot)}{/if}</span>
-        </li>
-        {volist name='$vars.provice_list' id='vo'}
-            <li>
-                {$vo.name}：{if isset($vo.city_list)}<span>{:implode(',', $vo.city_list)}</span>{/if}
-            </li>
-        {/volist}
-    </ul>
+    <ul class="city-box"></ul>
 </div>
 
 <script>
     $(function(){
-        $('#ChinaMap').SVGMap({
-            mapName: 'china',
-            mapWidth: 320,
-            mapHeight: 320,
-            showTip:false,
-            stateData: {
-                // 'heilongjiang': {'stateInitColor': 7, 'baifenbi': 0.236},
-                // 'beijing': {'stateInitColor': 7},
-                // 'shanghai': {'stateInitColor': 7},
-                // 'tianjin': {'stateInitColor': 7},
-                // 'sichuan': {'stateInitColor': 7},
-                // 'shandong': {'stateInitColor': 7},
-                // 'shanxi': {'stateInitColor': 7},
-                // 'zhejiang': {'stateInitColor': 7},
-                // 'jiangshu': {'stateInitColor': 7},
-                // 'hunan': {'stateInitColor': 7},
-                // 'guizou': {'stateInitColor': 7},
-                // 'neimenggu': {'stateInitColor': 7},
-                // 'henan': {'stateInitColor': 7},
-                // 'gansu': {'stateInitColor': 7},
-                // 'ningxia': {'stateInitColor': 7},
-                // 'jilin': {'diabled': true}
-            },
-//            hoverCallback:function(stateData,obj){
-//                $('#HoverCallback1').html(stateData);
-//                $('#HoverCallback').html('hover:'+obj.name);
-//            }
+        $.get('https://www.yingshangyan.com/api//Map/getUserAllCity',{},function(res){
+            if(res.code === 200){
+                var data = res.data;
+                var stateData = JSON.parse(data.color_josn);
+                var citydata = data.provice_list;
+                var str = '';
+                for(var i =0;i<citydata.length;i++){
+                    str += '<li>'+ citydata[i].name+' : ';
+                    for(var j = 0;j<citydata[i].city_list.length;j++){
+                        var str1 = '<span>'+citydata[i].city_list[j]+'</span>'
+                    }
+                    str += str1
+                    str += '</li>'
+                }
+                $(".city-box").append(str)
 
-        });
+                $(".province-num").html(data.provice_count)
+                $(".city-num").html(data.city_count)
+                $(".percent").html(data.rate+'%')
+
+                $('#ChinaMap').SVGMap({
+                    mapName: 'china',
+                    mapWidth: 320,
+                    mapHeight: 320,
+                    showTip:false,
+                    stateColorList:color_list,
+                    stateData:stateData
+                });
+            }
+        })
     })
+
+
 </script>
 
 </body>
 </html>
+

@@ -17,6 +17,10 @@ class Base extends Controller
     protected $data = [];
 
     protected $user_id='';
+    public function _initialize()
+    {
+        header('Access-Control-Allow-Origin:*');
+    }
 
 
     public function __destruct()

@@ -15,7 +15,27 @@ use think\Exception;
 
 class Upload extends Base
 {
-
+    /**
+     * @api {get} /wxapi/Upload 微信小程序上传图片,单张上传
+     * @apiGroup WXAPI Land API
+     *
+     * @apiParam {String} file   图片资源
+     *
+     * @apiSuccess {Number} code 状态码，值为200是正常
+     * @apiSuccess {String} msg 提示信息
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *      {
+     *           "code": 0,
+     *           "data": {
+     *               'imgUrl' : 'http:\/\/news-1253981917.cos.cn-south.myqcloud.com\/aee64fd04',
+     *                'size' : 23730,
+     *                'mimeType' : "image\/jpeg",
+     *                'name' : 'aee64fd04fdd1047a68490ba24a3d4cc-9b44f83032_small.jpg',
+     *           }
+     *       }
+     */
     public function index() {
         // 处理文件上传
         $file = $_FILES['file']; // 去除 field 值为 file 的文件

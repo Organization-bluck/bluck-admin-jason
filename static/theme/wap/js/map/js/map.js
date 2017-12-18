@@ -20,7 +20,7 @@
 			mapName: 'china',
 			mapWidth: 500,
 			mapHeight: 400,
-			stateColorList: ['2770B5', '429DD4', '5AABDA', '1C8DFF', '70B3DD', 'C6E1F4', 'EDF2F6'],
+			stateColorList: ['2770B5', '429DD4', '5AABDA', '1C8DFF', '70B3DD', 'C6E1F4', 'EDF2F6','bf7d0d'],
 			stateDataAttr: ['stateInitColor', 'stateHoverColor', 'stateSelectedColor', 'baifenbi'],
 			stateDataType: 'json',
 			stateSettingsXmlPath: '',
@@ -29,7 +29,8 @@
 			strokeWidth: 1,
 			strokeColor: 'F9FCFE',
 
-			stateInitColor: 'AAD5FF',
+			// stateInitColor: 'AAD5FF',
+			stateInitColor: 'adadad',
 			stateHoverColor: 'feb41c',
 			stateSelectedColor: 'E32F02',
 			stateDisabledColor: 'eeeeee',
@@ -241,9 +242,9 @@
 
 					obj.hover(function (e) {
 						if (this != current) {
-							this.animate({
-								fill: stateColor[this.id].hoverColor
-							}, 250);
+							// this.animate({
+							// 	fill: stateColor[this.id].hoverColor
+							// }, 250);
 						}
 						if (opt.showTip) {
 							clearTimeout(reTimer);

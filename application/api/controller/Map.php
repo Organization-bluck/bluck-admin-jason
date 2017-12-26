@@ -17,7 +17,7 @@ class Map extends Base
 {
     private $regex = '/(省|市|区|自治州|县|特别行政区)$/';
     /**
-     * @api {get} /Map/getAllCity 获取测试类型
+     * @api {get} /Map/getAllCity 所有城市数据
      * @apiGroup Map Land API
      *
      * @apiParam {Number} user_id   用户id
@@ -63,6 +63,7 @@ class Map extends Base
                 if($v['is_hot']) {
                     $hot_list[] = [
                         'id'        => $v['id'],
+                        'choice'    => in_array($v['id'], $user_city)? 1 : 0,
                         'name'      => preg_replace($this->regex, '', $v['name'])
                     ];
                 }

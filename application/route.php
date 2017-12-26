@@ -72,5 +72,11 @@ Route::group('api', function () {
     Route::rule('map/getAllCity', 'api/Map/getAllCity');
     Route::rule('map/updateUserCity', 'api/Map/updateUserCity');
     Route::rule('map/getUserAllCity', 'api/Map/getUserAllCity');
+    Route::rule('music/getList', 'api/Music/getList');
+    Route::rule('music/getSearch', 'api/Music/getSearch');
+    Route::rule('music/getPlay', 'api/Music/getPlay');
+    Route::rule('music/getSongWord', 'api/Music/getSongWord');
+    Route::rule('music/getAuthorSongList', 'api/Music/getAuthorSongList');
+    Route::rule('music/getCommentList', 'api/Music/getCommentList');
     Route::miss('api/Info/nofound');
 });

@@ -11,6 +11,8 @@ namespace app\wxapi\controller;
 
 use QCloud_WeApp_SDK\Auth\LoginService;
 use QCloud_WeApp_SDK\Constants;
+use think\Db;
+use think\Exception;
 
 class Login extends Base
 {
@@ -29,6 +31,7 @@ class Login extends Base
      *           "data": {
      *               "userinfo": {
      *                      'openId' : 'ouUj_0CDuDewz-EtfLKMbQphLEqk',
+     *                      'user_id' : 2,
      *                      'nickName' : '\u8bb8\u6052',
      *                      'gender' : 1,
      *                      'language' : 'zh_CN',
@@ -47,21 +50,44 @@ class Login extends Base
      */
     public function index()
     {
-        header('Content-type:application/json;charset=utf-8');
-        $result = LoginService::login();
+        try{
+            header('Content-type:application/json;charset=utf-8');
+            $result = LoginService::login();
 
-        if ($result['loginState'] === Constants::S_AUTH) {
+            if ($result['loginState'] !== Constants::S_AUTH) {
+                throw new Exception($result['error']);
+            }
+            $user_info = $this->object2array($result['userinfo']);
+
+            if(!($user_id = Db::table('map_user')->where(['open_id' => $user_info['userinfo']['openId']])->value('id'))) {
+                //注册
+                $data = [
+                    'name'      => $user_info['userinfo']['nickName'],
+                    'open_id'   => $user_info['userinfo']['openId'],
+                ];
+                if(!($user_id = Db::table('map_user')->insert($data, false, true))) {
+                    throw new Exception('添加用户信息失败');
+                }
+
+            }
+            $user_info['userinfo']['user_id'] = $user_id;
+
             echo json_encode([
                 'code' => 0,
-                'data' => $result['userinfo']
+                'data' => $user_info
             ]);
-        } else {
+        } catch (Exception $e) {
             echo json_encode([
                 'code' => -1,
-                'error' => $result['error']
+                'error' => $e->getMessage()
             ]);
         }
         exit;
+    }
+
+    private function object2array(&$object) {
+        $object =  json_decode( json_encode( $object),true);
+        return  $object;
     }
 
 }

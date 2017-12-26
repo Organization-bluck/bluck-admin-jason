@@ -16,7 +16,7 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => '127.0.0.1',
+    'hostname'        => '106.14.2.34',
     // 数据库名
     'database'        => 'poetry',
     // 用户名

@@ -64,7 +64,7 @@ class Music extends Base
                             'song_id'   => $v['song_id'],
                             'ting_uid'  => $v['ting_uid'],
                             'title'     => $v['title'],
-                            'picture'   => $v['pic_small'],
+                            'picture'   => $v['pic_s500'],
                             'hot'       => $v['hot'],
                             'author'    => $v['author'],
                         ];
@@ -126,7 +126,7 @@ class Music extends Base
                             'song_id'   => $v['song_id'],
                             'ting_uid'  => $v['ting_uid'],
                             'title'     => $v['title'],
-                            'picture'   => $v['pic_small'],
+                            'picture'   => $v['pic_big'],
                             'hot'       => $v['hot'],
                             'author'    => $v['author'],
                         ];
@@ -249,7 +249,7 @@ class Music extends Base
                     'title'     => isset($result['songinfo']['title']) ? $result['songinfo']['title'] : '',
                     'author'    => isset($result['songinfo']['author']) ? $result['songinfo']['author'] : '',
                     'all_rate'  => isset($result['songinfo']['all_rate']) ? $result['songinfo']['all_rate'] : '',
-                    'picture'   => isset($result['songinfo']['pic_small']) ? $result['songinfo']['pic_small'] : '',
+                    'picture'   => isset($result['songinfo']['pic_premium']) ? $result['songinfo']['pic_premium'] : '',
                     'file_link' => isset($result['bitrate']['file_link']) ? $result['bitrate']['file_link'] : '',
                     'file_size' => isset($result['bitrate']['file_size']) ? $result['bitrate']['file_size'] : '',
                 ];
@@ -364,7 +364,7 @@ class Music extends Base
                             'song_id'   => $v['song_id'],
                             'ting_uid'  => $v['ting_uid'],
                             'title'     => $v['title'],
-                            'picture'   => $v['pic_small'],
+                            'picture'   => $v['pic_s500'],
                             'hot'       => $v['hot'],
                             'all_rate'  => $v['all_rate'],
                             'author'    => $v['author'],

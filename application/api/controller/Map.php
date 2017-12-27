@@ -117,12 +117,13 @@ class Map extends Base
     public function updateUserCity()
     {
         try{
-            $uid = input('post.user_id/d');
+            $uid = input('get.user_id/d');
             if(!$uid) {
                 throw new Exception('用户id不存在');
             }
 
-            $city_id = input('post.city_id/a');
+            $city_id = input('get.city_id/a');
+            var_dump($city_id);exit;
             if(!$city_id) {
                 throw new Exception('请选择城市');
             }

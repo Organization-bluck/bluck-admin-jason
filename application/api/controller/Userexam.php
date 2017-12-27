@@ -19,7 +19,7 @@ class Userexam extends Base
 
     /**
      * @api {post} /Userexam/getUserIsEnd 判断用户是否存在上次未完成测试
-     * @apiGroup Userexam Land API
+     * @apiGroup Poetries Land API
      *
      * @apiSuccess {Number} code 状态码，值为0是正常
      * @apiSuccess {String} msg 提示信息
@@ -51,7 +51,7 @@ class Userexam extends Base
 
     /**
      * @api {post} /Userexam/addUserAnswer 添加用户答案
-     * @apiGroup Userexam Land API
+     * @apiGroup Poetries Land API
      *
      * @apiParam {Number} exam_id 考试id
      * @apiParam {Number} qm_id   题目id
@@ -180,7 +180,7 @@ class Userexam extends Base
 
     /**
      * @api {post} /Userexam/addUserRecord 提交测试
-     * @apiGroup Userexam Land API
+     * @apiGroup Poetries Land API
      *
      * @apiParam {Number} exam_id 考试id
      *
@@ -263,7 +263,7 @@ class Userexam extends Base
 
     /**
      * @api {post} /Userexam/updateCancelExam 取消测试
-     * @apiGroup Userexam Land API
+     * @apiGroup Poetries Land API
      *
      * @apiSuccess {Number} code 状态码，值为0是正常
      * @apiSuccess {String} msg 提示信息

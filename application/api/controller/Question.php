@@ -17,7 +17,7 @@ class Question extends Base
 {
     /**
      * @api {get} /Question/getQuestionType 获取测试类型
-     * @apiGroup Question Land API
+     * @apiGroup Poetries Land API
      *
      * @apiSuccess {Number} code 状态码，值为200是正常
      * @apiSuccess {String} msg 提示信息
@@ -48,7 +48,7 @@ class Question extends Base
 
     /**
      * @api {get} /Question/getRandQuestionList 获取随机测试测试
-     * @apiGroup Question Land API
+     * @apiGroup Poetries Land API
      *
      * @apiParam {String} level_id 难度级别id
      *
@@ -142,7 +142,7 @@ class Question extends Base
 
     /**
      * @api {get} /Question/getQuestionList 获取测试内容
-     * @apiGroup Question Land API
+     * @apiGroup Poetries Land API
      *
      * @apiParam {String} exam_id 考试id
      *

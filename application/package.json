@@ -1,0 +1,20 @@
+{
+  "name": "bluck接口文档",
+  "version": "2.0.0",
+  "description": "生活常用接口，随笔",
+  "apidoc": {
+    "name": "bluck接口文档",
+    "title": "bluck接口文档",
+    "description": "URL 前缀：https://www.yingshangyan.com/api/(url)<br/>加密方式待定"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/startkong"
+  },
+  "author": "许恒",
+  "license": "ISC"
+}

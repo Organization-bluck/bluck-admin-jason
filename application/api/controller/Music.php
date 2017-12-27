@@ -15,8 +15,8 @@ class Music extends Base
     private $baidu_url = 'http://tingapi.ting.baidu.com/v1/restserver/ting';
 
     /**
-     * @api {get} /Muisic/getList 获取音乐列表
-     * @apiGroup Muisic Land API
+     * @api {get} /Music/getList 获取音乐列表
+     * @apiGroup Music Land API
      *
      * @apiParam {Number} page   页数
      * @apiParam {Number} pagesize   每页多少条
@@ -80,8 +80,8 @@ class Music extends Base
     }
 
     /**
-     * @api {get} /Muisic/getCommentList 获取每日推荐音乐列表
-     * @apiGroup Muisic Land API
+     * @api {get} /Music/getCommentList 获取每日推荐音乐列表
+     * @apiGroup Music Land API
      *
      * @apiParam {Number} pagesize   推荐条数
      *
@@ -142,8 +142,8 @@ class Music extends Base
     }
 
     /**
-     * @api {get} /Muisic/getSearch 获取搜索音乐列表
-     * @apiGroup Muisic Land API
+     * @api {get} /Music/getSearch 获取搜索音乐列表
+     * @apiGroup Music Land API
      *
      * @apiParam {String} keyword   音乐名称
      *
@@ -201,8 +201,8 @@ class Music extends Base
     }
 
     /**
-     * @api {get} /Muisic/getPlay 获取音乐播放信息
-     * @apiGroup Muisic Land API
+     * @api {get} /Music/getPlay 获取音乐播放信息
+     * @apiGroup Music Land API
      *
      * @apiParam {Number} songid   音乐资源id
      *
@@ -264,8 +264,8 @@ class Music extends Base
     }
 
     /**
-     * @api {get} /Muisic/getSongWord 获取音乐歌词
-     * @apiGroup Muisic Land API
+     * @api {get} /Music/getSongWord 获取音乐歌词
+     * @apiGroup Music Land API
      *
      * @apiParam {Number} songid   音乐资源id
      *
@@ -313,8 +313,8 @@ class Music extends Base
     }
 
     /**
-     * @api {get} /Muisic/getAuthorSongList 获取歌手的音乐列表
-     * @apiGroup Muisic Land API
+     * @api {get} /Music/getAuthorSongList 获取歌手的音乐列表
+     * @apiGroup Music Land API
      *
      * @apiParam {Number} tinguid   歌手id
      * @apiParam {Number} page   页数
@@ -381,8 +381,8 @@ class Music extends Base
     }
 
     /**
-     * @api {get} /Muisic/getAuthorInfo 获取歌手信息
-     * @apiGroup Muisic Land API
+     * @api {get} /Music/getAuthorInfo 获取歌手信息
+     * @apiGroup Music Land API
      *
      * @apiParam {Number} tinguid   歌手id
      *

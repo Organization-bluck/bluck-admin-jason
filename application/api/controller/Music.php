@@ -8,6 +8,7 @@
 
 namespace app\api\controller;
 
+use think\Db;
 use think\Exception;
 
 class Music extends Base
@@ -236,25 +237,43 @@ class Music extends Base
             if(empty($params['songid'])) {
                 throw new Exception('音乐信息不存在');
             }
+            if(!($this->data = Db::table('music_source')->field('songid,title,author,all_rate,picture,file_link,file_size')->where(['songid' => $params['songid']])->find())) {
+                $result = file_get_contents($this->baidu_url.'?'.http_build_query($params));
+                if(!$result) {
+                    throw new Exception('数据不存在');
+                }
+                $result = json_decode($result, 1);
 
-            $result = file_get_contents($this->baidu_url.'?'.http_build_query($params));
-            if(!$result) {
-                throw new Exception('数据不存在');
-            }
-            $result = json_decode($result, 1);
+                if(isset($result['error_code']) && ($result['error_code'] == 22000)) {
+                    if(!empty($result['bitrate']['file_link']) && !empty($result['songinfo']['title'])) {
+                      $source = file_get_contents($result['bitrate']['file_link']);
+                      $dirname = ROOT_PATH.'static/upload/music/'.$params['songid'];
+                      if(!is_dir($dirname)) {
+                          mkdir(ROOT_PATH.'static/upload/music/', 0777, true);
+                      }
 
-            if(isset($result['error_code']) && ($result['error_code'] == 22000)) {
-                $this->data = [
-                    'songid'    => isset($result['songinfo']['song_id']) ? $result['songinfo']['song_id'] : 0,
-                    'title'     => isset($result['songinfo']['title']) ? $result['songinfo']['title'] : '',
-                    'author'    => isset($result['songinfo']['author']) ? $result['songinfo']['author'] : '',
-                    'all_rate'  => isset($result['songinfo']['all_rate']) ? $result['songinfo']['all_rate'] : '',
-                    'picture'   => isset($result['songinfo']['pic_premium']) ? $result['songinfo']['pic_premium'] : '',
-                    'file_link' => isset($result['bitrate']['file_link']) ? $result['bitrate']['file_link'] : '',
-                    'file_size' => isset($result['bitrate']['file_size']) ? $result['bitrate']['file_size'] : '',
-                ];
-            } else {
-                throw new Exception($result['error_message']);
+                      $is_ok = file_put_contents(iconv("UTF-8", "GBK", ROOT_PATH.'static/upload/music/'.$params['songid'].'.mp3'), $source);
+                      if(!$is_ok) {
+                            throw new Exception('下载资源失败');
+                      }
+                      $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
+                      $file_like = $http_type.$_SERVER['HTTP_HOST'].'/static/upload/music/'.$params['songid'].'.mp3';
+                    }
+
+                    $this->data = [
+                        'songid'    => isset($result['songinfo']['song_id']) ? $result['songinfo']['song_id'] : 0,
+                        'title'     => isset($result['songinfo']['title']) ? $result['songinfo']['title'] : '',
+                        'author'    => isset($result['songinfo']['author']) ? $result['songinfo']['author'] : '',
+                        'all_rate'  => isset($result['songinfo']['all_rate']) ? $result['songinfo']['all_rate'] : '',
+                        'picture'   => isset($result['songinfo']['pic_premium']) ? $result['songinfo']['pic_premium'] : '',
+                        'file_link' => $file_like,
+                        'file_size' => isset($result['bitrate']['file_size']) ? $result['bitrate']['file_size'] : '',
+                    ];
+
+                    Db::table('music_source')->insert($this->data);
+                } else {
+                    throw new Exception($result['error_message']);
+                }
             }
 
         } catch (Exception $e) {
@@ -446,5 +465,4 @@ class Music extends Base
             $this->msg = $e->getMessage();
         }
     }
-
 }

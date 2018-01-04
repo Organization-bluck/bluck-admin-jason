@@ -2,8 +2,8 @@
 
 {block name="button"}
 <div class="nowrap pull-right" style="margin-top:10px">
-    <button data-modal='{:url("$classuri/add")}' data-title="添加分类" class='layui-btn layui-btn-small'>
-        <i class='fa fa-plus'></i> 添加诗人
+    <button data-modal='{:url("$classuri/add")}' data-title="添加音乐" class='layui-btn layui-btn-small'>
+        <i class='fa fa-plus'></i> 添加音乐
     </button>
 </div>
 {/block}
@@ -13,9 +13,9 @@
 <!-- 表单搜索 开始 -->
 <form class="layui-form layui-form-pane form-search" action="__SELF__" onsubmit="return false" method="get">
     <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">诗人名称</label>
+        <label class="layui-form-label">音乐名称</label>
         <div class="layui-input-inline">
-            <input name="name" value="{$Think.get.name|default=''}" placeholder="请输入关键词" class="layui-input">
+            <input name="name" value="{$Think.get.title|default=''}" placeholder="请输入关键词" class="layui-input">
         </div>
     </div>
 
@@ -41,8 +41,8 @@
         <tbody>
             {foreach $list as $key=>$vo}
             <tr>
-                <td class='text-left nowrap'>{$vo.name}</td>
-                <td class='text-left nowrap'>{$vo.created_at}</td>
+                <td class='text-left nowrap'>{$vo.title}</td>
+                <td class='text-left nowrap'>{$vo.create_at}</td>
                 <td class='text-left nowrap'>
                     {if auth("$classuri/edit")}
                     <span class="text-explode">|</span>

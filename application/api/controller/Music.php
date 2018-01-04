@@ -247,7 +247,7 @@ class Music extends Base
                 if(isset($result['error_code']) && ($result['error_code'] == 22000)) {
                     if(!empty($result['bitrate']['file_link']) && !empty($result['songinfo']['title'])) {
                       $source = file_get_contents($result['bitrate']['file_link']);
-                      $dirname = ROOT_PATH.'static/upload/music/'.$params['songid'];
+                      $dirname = ROOT_PATH.'static/upload/music/';
                       if(!is_dir($dirname)) {
                           mkdir(ROOT_PATH.'static/upload/music/', 0777, true);
                       }

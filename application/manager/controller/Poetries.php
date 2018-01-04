@@ -26,15 +26,24 @@ class Poetries extends BasicAdmin
     public function index()
     {
         $this->title = '诗集管理';
-        $get = $this->request->get();
-        $db = Db::name($this->table)->where(['is_delete' => 0]);
-        if(!empty($get['poet_id'])) {
-            $db->where(['poet_id' => $get['poet_id']]);
+
+        $db = Db::name($this->table .' ps')
+            ->field('ps.id, ps.title, ps.created_at, p.name')
+            ->join('poets p', 'p.id=ps.poet_id')
+            ->order('ps.created_at desc');
+        // 搜索条件
+        $keyword = $this->request->param('title', '');
+        if ($keyword) {
+            $db->where('ps.title', 'like', "%{$keyword}%");
         }
-        foreach (['title'] as $key) {
-            (isset($get[$key]) && $get[$key] !== '') && $db->whereLike($key, "%{$get[$key]}%");
-        }
-        return parent::_list($db);
+        $result = array();
+        $page = $db->paginate(20, false);
+        $result['lists'] = $page->all();
+        $result['page'] = preg_replace(['|href="(.*?)"|', '|pagination|'], ['data-open="$1" href="javascript:void(0);"', 'pagination pull-right'], $page->render());
+
+        $this->assign('keyword', $keyword);
+        $this->assign('title', '企业用户激活列表');
+        return view('', $result);
     }
 
 }

@@ -31,7 +31,7 @@ class Index extends Controller
      */
     public function index()
     {
-        exit('fds');
+        return view();
     }
 
     public function qrc()

@@ -121,11 +121,13 @@ class Map extends Base
             if(!$uid) {
                 throw new Exception('用户id不存在');
             }
-
-            $city_id = input('get.city_id/a');
-            var_dump($city_id);exit;
+            $city_id = input('get.city_id/s');
             if(!$city_id) {
                 throw new Exception('请选择城市');
+            }
+            $city_id = json_decode(htmlspecialchars_decode($city_id), 1);
+            if(!$city_id) {
+                throw new Exception('城市信息错误');
             }
             $user_city = Db::table('map_info')->where(['uid' => $uid])->column('mc_id');
             if(!$user_city) {

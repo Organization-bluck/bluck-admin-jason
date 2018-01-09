@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>等待抽奖</title>
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+    <style>
+        *{list-style-type:none; }
+        .content {width: 800px;border: 1px black solid;margin: 5% auto}
+        .user_ul .user_div {width: 21%; float:left; border: 1px red solid; margin: 10px;}
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div style="width: 100%">
+            <ul class="user_ul">
+                {if !empty($user_list)}
+                    {volist name='user_list' id='v'}
+                    <li class="user_div">
+                        <div>
+                            <img src="{$v.headimgurl|default='__WAP_STATIC__/js/lottery/image/default.png'}" alt="{$v.nickname}" width="100%">
+                            <div style="text-align: center;font-size: 18px;margin: 5px">{$v.id}号{$v.nickname}</div>
+                        </div>
+                    </li>
+                    {/volist}
+                {/if}
+            </ul>
+        <div style="clear: both"></div>
+        </div>
+        <a href="{:url('index/lettor')}">进入抽奖页</a>
+        <input type="hidden" name="people_count" value="{$user_list|count}">
+    </div>
+    <script>
+        $(function() {
+            setInterval(function () {
+                $.get("{:url('index/ajaxGetCount')}", {}, function (data) {
+                    if(data.code == 0) {
+                        if((parseInt($('input[name=people_count]').val()) != parseInt(data.date.people_count))) {
+                            change_user();
+                        }
+                    }
+                }, 'json');
+            }, 2000);
+            
+            function change_user() {
+                $.get("{:url('index/ajaxGetUserList')}", {}, function (data) {
+                    if(data.code == 0) {
+                        var list = '';
+                        for (var i=0; i < data.date.user_list.length; i++) {
+                            list+= '<li class="user_div">';
+                            list+= '<div>';
+                            list+= '<img src='+(data.date.user_list[i].headimgurl?data.date.user_list[i].headimgurl:"__WAP_STATIC__/js/lottery/image/default.png")+' alt='+data.date.user_list[i].nickname+' width="100%">';
+                            list+= '<div style="text-align: center;font-size: 18px;margin: 5px">'+data.date.user_list[i].id+'号'+data.date.user_list[i].nickname+'</div>';
+                            list+= '</div>';
+                            list+= '</li>';
+                        }
+                        $('.user_ul').html(list);
+                        $('input[name=people_count]').val(data.date.user_count)
+                    }
+                }, 'json');
+            }
+        });
+    </script>
+</body>
+</html>

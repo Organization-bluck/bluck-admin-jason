@@ -247,4 +247,8 @@ return [
     'view_replace_str'       => [
         '__WAP_STATIC__' => '/static/theme/wap/',
     ],
+    'wechat_count' => [
+        'appId' => 'wxb8947075f3db73ab',
+        'appSecret' => '57f1b3f38d7059e8f64d7258ae4b8bd5'
+    ],
 ];

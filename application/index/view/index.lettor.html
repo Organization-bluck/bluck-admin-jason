@@ -8,9 +8,9 @@
 <script type="text/javascript">
 
     $(function(){
+        var alldata = JSON.parse('{if !empty($data["url"])}{$data["url"]}{else /}[]{/if}');
+        var imageName = JSON.parse('{if !empty($data["img"])}{$data["img"]}{else /}[]{/if}');
 
-        var alldata = new Array("__WAP_STATIC__/js/lottery/image/1.jpeg","__WAP_STATIC__/js/lottery/image/2.jpg","__WAP_STATIC__/js/lottery/image/3.jpg","__WAP_STATIC__/js/lottery/image/4.jpg","__WAP_STATIC__/js/lottery/image/5.jpg","__WAP_STATIC__/js/lottery/image/6.jpg","__WAP_STATIC__/js/lottery/image/7.jpg");
-        var imageName = new Array("#img1","#img2","#img3","#img4","#img5","#img6");
         var nameNum = imageName.length - 1;
         var num = alldata.length - 1;
         var show = $("#image");
@@ -95,19 +95,20 @@
             <img src="__WAP_STATIC__/js/lottery/image/1.jpeg" id="image" height="450px" width="400px"/>
         </div>
     </div>
-    <ul style="position:absolute; top:10px; right:20px ;list-style-type:none" >
-        <h4 style="color:#06C">一等奖:</h4>
-        <li><img src="__WAP_STATIC__/js/lottery/image/default.png" id="img1" height="100px" width="100px" /></li>
-        <h4 style="color:#06C">二等奖:</h4>
-        <li><img src="__WAP_STATIC__/js/lottery/image/default.png" id="img2" height="100px" width="100px" /></li>
-        <li><img src="__WAP_STATIC__/js/lottery/image/default.png" id="img3" height="100px" width="100px" /></li>
-    </ul>
-    <ul style="position:absolute; top:10px; right:180px ;list-style-type:none" >
-        <h4 style="color:#06C">三等奖：</h4>
-        <li><img src="__WAP_STATIC__/js/lottery/image/default.png" id="img4" height="100px" width="100px" /></li>
-        <li><img src="__WAP_STATIC__/js/lottery/image/default.png" id="img5" height="100px" width="100px" /></li>
-        <li><img src="__WAP_STATIC__/js/lottery/image/default.png" id="img6" height="100px" width="100px" /></li>
-    </ul>
+    {if !empty($data['prize_list'])}
+        <?php $l=1;?>
+        {volist name='data.prize_list' id='val'}
+            <ul style="position:absolute; top:10px; right:{$key*130}px;list-style-type:none" >
+                <h4 style="color:#06C">{$val.title}：</h4>
+                {php}
+                    $len = $val['pcount']+$l;
+                    for($l; $l< $len; $l++) {
+                        echo '<li><img src="__WAP_STATIC__/js/lottery/image/default.png" id="img'.$l.'" height="100px" width="100px" /></li>';
+                    }
+                {/php}
+            </ul>
+        {/volist}
+    {/if}
     <!--<div class="btn">-->
     <!--<a href="javascript:void(0)" class="start" id="btn">开始抽奖</a>-->
     <!--</div>-->

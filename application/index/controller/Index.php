@@ -42,14 +42,27 @@ class Index extends Controller
     public function lettor()
     {
         try{
-            $user_list = Db::table('lottery_user')->field('id, headimgurl')->select();
+            $user_url = Db::table('lottery_user')->where(['lc_id' => 1])->column('headimgurl');
 
-            if($user_list) {
-                foreach ((array)$user_list as $val) {
+            $prize = Db::table('lottery_prize')->field('title, pcount')->where(['lc_id' => 1])->select();
 
+            $img = 0; $img_ids = [];
+            if($prize) {
+                array_walk($prize, function($val) use (&$img) {
+                    $img += $val['pcount'];
+                });
+
+                for($i=1; $i < $img; $i++ ) {
+                    $img_ids[] = '#img'.$i;
                 }
             }
-            return view('', ['user_list' => $user_list]);
+
+            if(count($user_url) < $img) {
+                throw new Exception('人数少于奖励人数');
+            }
+
+            $this->assign('data', ['prize_list' => $prize, 'img' => json_encode($img_ids), 'url' => json_encode($user_url)]);
+            return view();
         } catch (Exception $e) {
             exit($e->getMessage());
         }

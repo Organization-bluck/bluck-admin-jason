@@ -9,9 +9,6 @@
 namespace app\api\controller;
 
 
-use think\Db;
-use think\Exception;
-
 class Index extends Base
 {
     

@@ -15,7 +15,27 @@ use think\Exception;
 
 class Commen extends Base
 {
-
+    /**
+     * @api {get} /Commen/getUrlContent 获取第三方资源
+     * @apiGroup Commen Land API
+     *
+     * @apiVersion 1.0.0
+     *
+     * @apiParam {String} url    第三方url,先urlencode,然后base64
+     * @apiParam {String} type   请求方式  get 或 post
+     * @apiParam {String} params 请求参数(可选) 先json_encode,然后base64
+     *
+     * @apiSuccess {Number} code 状态码，值为200是正常
+     * @apiSuccess {String} msg 提示信息
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *      {
+     *           "code": 200,
+     *           "msg": "操作成功",
+     *           "data": {}
+     *       }
+     */
     public function getUrlContent()
     {
         try{
@@ -35,7 +55,7 @@ class Commen extends Base
             }
             $data = [];
             if(!empty($params['params'])) {
-                $data = json_decode($params['params'], 1);
+                $data = json_decode(base64_decode($params['params']), 1);
                 if(!$data) {
                     throw new Exception();
                 }

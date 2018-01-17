@@ -19,6 +19,8 @@ class Music extends Base
      * @api {get} /Music/getList 获取音乐列表
      * @apiGroup Music Land API
      *
+     * @apiVersion 1.0.0
+     *
      * @apiParam {Number} page   页数
      * @apiParam {Number} pagesize   每页多少条
      * @apiParam {Number} type   音乐类型id 1-新歌榜,2-热歌榜,11-摇滚榜,12-爵士,16-流行,21-欧美金曲榜,22-经典老歌榜,23-情歌对唱榜,24-影视金曲榜,25-网络歌曲榜
@@ -84,6 +86,8 @@ class Music extends Base
      * @api {get} /Music/getCommentList 获取每日推荐音乐列表
      * @apiGroup Music Land API
      *
+     * @apiVersion 1.0.0
+     *
      * @apiParam {Number} pagesize   推荐条数
      *
      * @apiSuccess {Number} code 状态码，值为200是正常
@@ -146,6 +150,8 @@ class Music extends Base
      * @api {get} /Music/getSearch 获取搜索音乐列表
      * @apiGroup Music Land API
      *
+     * @apiVersion 1.0.0
+     *
      * @apiParam {String} keyword   音乐名称
      *
      * @apiSuccess {Number} code 状态码，值为200是正常
@@ -204,6 +210,8 @@ class Music extends Base
     /**
      * @api {get} /Music/getPlay 获取音乐播放信息
      * @apiGroup Music Land API
+     *
+     * @apiVersion 1.0.0
      *
      * @apiParam {Number} songid   音乐资源id
      *
@@ -286,6 +294,8 @@ class Music extends Base
      * @api {get} /Music/getSongWord 获取音乐歌词
      * @apiGroup Music Land API
      *
+     * @apiVersion 1.0.0
+     *
      * @apiParam {Number} songid   音乐资源id
      *
      * @apiSuccess {Number} code 状态码，值为200是正常
@@ -334,6 +344,8 @@ class Music extends Base
     /**
      * @api {get} /Music/getAuthorSongList 获取歌手的音乐列表
      * @apiGroup Music Land API
+     *
+     * @apiVersion 1.0.0
      *
      * @apiParam {Number} tinguid   歌手id
      * @apiParam {Number} page   页数
@@ -402,6 +414,8 @@ class Music extends Base
     /**
      * @api {get} /Music/getAuthorInfo 获取歌手信息
      * @apiGroup Music Land API
+     *
+     * @apiVersion 1.0.0
      *
      * @apiParam {Number} tinguid   歌手id
      *

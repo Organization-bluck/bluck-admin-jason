@@ -21,8 +21,8 @@ class Base extends Controller
         require_once  VENDOR_PATH.'/qcloud/cos-sdk-v5/cos-autoloader.php';
 
         Conf::setup(array(
-            'appId'          => 'wx5d2a9650d1ab4747',
-            'appSecret'      => 'a9ddfb47dd576af7fb51f274ee4dda59',
+            'appId'          => 'wx49ab514a4a6590da',
+            'appSecret'      => 'b21f9507afa87a8de9246b53400c13be',
             'useQcloudLogin' => false,
             'mysql' => [
 //                'host' => 'sh-cdb-4urfpzxp.sql.tencentcdb.com:63645',

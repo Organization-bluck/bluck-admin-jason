@@ -18,6 +18,8 @@ class User extends Base
      * @api {get} /wxapi/user 获取微信小程序个人信息
      * @apiGroup WXAPI Land API
      *
+     * @apiVersion 1.0.0
+     *
      * @apiSuccess {Number} code 状态码，值为200是正常
      * @apiSuccess {String} msg 提示信息
      *

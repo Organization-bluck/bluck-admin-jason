@@ -20,6 +20,8 @@ class Map extends Base
      * @api {get} /Map/getAllCity 所有城市数据
      * @apiGroup Map Land API
      *
+     * @apiVersion 1.0.0
+     *
      * @apiParam {Number} user_id   用户id
      *
      * @apiSuccess {Number} code 状态码，值为200是正常
@@ -100,6 +102,8 @@ class Map extends Base
      * @api {get} /Map/updateUserCity 更新用户选择地址
      * @apiGroup Map Land API
      *
+     * @apiVersion 1.0.0
+     *
      * @apiParam {Number} user_id   用户id
      * @apiParam {String[]} city_id   城市id
      *
@@ -175,6 +179,8 @@ class Map extends Base
     /**
      * @api {get} /Map/getUserAllCity 获取用户城市
      * @apiGroup Map Land API
+     *
+     * @apiVersion 1.0.0
      *
      * @apiParam {Number} user_id   用户id
      *

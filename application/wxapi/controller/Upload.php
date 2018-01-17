@@ -19,6 +19,8 @@ class Upload extends Base
      * @api {get} /wxapi/Upload 微信小程序上传图片,单张上传
      * @apiGroup WXAPI Land API
      *
+     * @apiVersion 1.0.0
+     *
      * @apiParam {String} file   图片资源
      *
      * @apiSuccess {Number} code 状态码，值为200是正常

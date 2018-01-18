@@ -64,7 +64,7 @@ class Commen extends Base
                 $client = new Client();
                 switch (strtolower($params['type'])) {
                     case 'get':
-                        $res = $client->request('GET', urldecode(base64_decode($params['url'],1)).($data?http_build_query($data):''));
+                        $res = $client->request('GET', urldecode(base64_decode($params['url'],1)).'?'.($data?http_build_query($data):''));
                         break;
                     case 'post':
                         $res = $client->request('POST', urldecode(base64_decode($params['url'],1)), ['form_params' => $data]);

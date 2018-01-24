@@ -78,6 +78,7 @@ Route::group('api', function () {
     Route::rule('music/getSongWord', 'api/Music/getSongWord');
     Route::rule('music/getAuthorSongList', 'api/Music/getAuthorSongList');
     Route::rule('music/getCommentList', 'api/Music/getCommentList');
-    Route::rule('comment/getUrlContent', 'api/Commen/getUrlContent');
+    Route::rule('commen/getUrlContent', 'api/Commen/getUrlContent');
+    Route::rule('news/getlist', 'api/News/getlist');
     Route::miss('api/Info/nofound');
 });

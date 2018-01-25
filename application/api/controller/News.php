@@ -86,20 +86,29 @@ class News extends Base
                 throw new Exception('请传入链接');
             }
 
-            if(!($this->data = Db::table('news_info')->where(['uniq_id' => md5($url)])->find())) {
+            if(!($data = Db::table('news_info')->where(['uniq_id' => md5($url)])->find())) {
+                $data['l_id'] = Db::table('news_list')->where(['url' => $url])->value('id');
+
                 $hj = QueryList::Query($url,array(
                     'title'=>array('h1','html'),
                     'src'=>array('span','html'),
                     'content'=>array('#content','html')
                 ));
                 if(!empty($hj->data)) {
-                    $this->data['title'] = $hj->data[0]['title'];
-                    $this->data['date'] = rtrim(explode('来源', $hj->data[0]['src'])[0], chr(0xc2).chr(0xa0));
-                    $this->data['author'] = explode('：', $hj->data[0]['src'])[1];
-                    $this->data['content'] = $hj->data[0]['content']. '<div>数据内容由阿里云新闻头条api提供</div>';
+                    $data['title'] = $hj->data[0]['title'];
+                    $data['date'] = rtrim(explode('来源', $hj->data[0]['src'])[0], chr(0xc2).chr(0xa0));
+                    $data['author'] = explode('：', $hj->data[0]['src'])[1];
+                    $data['content'] = $hj->data[0]['content']. '<div>数据内容由阿里云新闻头条api提供</div>';
                 }
-                Db::table('news_info')->insert(array_merge($this->data, ['uniq_id' => md5($url)]));
+                Db::table('news_info')->insert(array_merge($data, ['uniq_id' => md5($url)]));
             }
+            $id = $data['l_id'];
+            unset($data['l_id']);
+            $this->data = [
+                'info'      => $data,
+                'prev_id'   => !$id ? 0 : Db::table('news_list')->where(['id' => ['lt', $id]])->value('url'),
+                'next_id'   => !$id ? 0 : Db::table('news_list')->where(['id' => ['gt', $id]])->value('url'),
+            ];
 
         } catch (Exception $e) {
             $this->code = -1;

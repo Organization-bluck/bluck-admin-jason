@@ -26,7 +26,8 @@
         "topthink/think-queue": "^1.0",
         "endroid/qrcode": "^1.9",
         "aliyuncs/oss-sdk-php": "^2.2",
-        "guzzlehttp/guzzle": "~6.0"
+        "guzzlehttp/guzzle": "~6.0",
+        "jaeger/querylist": "^3.2"
     },
     "extra": {
         "think-path": "thinkphp"

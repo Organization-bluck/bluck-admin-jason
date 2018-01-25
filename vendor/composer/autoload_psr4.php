@@ -14,10 +14,12 @@ return array(
     'Wechat\\' => array($vendorDir . '/zoujingli/wechat-php-sdk/Wechat'),
     'Symfony\\Component\\OptionsResolver\\' => array($vendorDir . '/symfony/options-resolver'),
     'Qiniu\\' => array($vendorDir . '/qiniu/php-sdk/src/Qiniu'),
+    'QL\\' => array($vendorDir . '/jaeger/querylist'),
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
     'OSS\\' => array($vendorDir . '/aliyuncs/oss-sdk-php/src/OSS'),
     'GuzzleHttp\\Psr7\\' => array($vendorDir . '/guzzlehttp/psr7/src'),
     'GuzzleHttp\\Promise\\' => array($vendorDir . '/guzzlehttp/promises/src'),
     'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
+    'GraphQL\\' => array($vendorDir . '/webonyx/graphql-php/src'),
     'Endroid\\QrCode\\' => array($vendorDir . '/endroid/qrcode/src'),
 );

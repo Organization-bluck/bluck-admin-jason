@@ -16,13 +16,13 @@ use think\Exception;
 class Commen extends Base
 {
     /**
-     * @api {get} /Commen/getUrlContent 获取第三方资源
+     * @api {get} /api/Commen/getUrlContent 1.获取第三方资源
      * @apiGroup Commen Land API
      *
      * @apiVersion 1.0.0
      *
-     * @apiParam {String} url    第三方url,先urlencode,然后base64
-     * @apiParam {String} type   请求方式  get 或 post
+     * @apiParam {String} url=aHR0cHMlM0ElMkYlMkZyb3V0ZS5zaG93YXBpLmNvbSUyRjI1NS0xJTNGc2hvd2FwaV9hcHBpZCUzRDU0MzYwJTI2c2hvd2FwaV9zaWduJTNEMjhiZDk5ZGYwNWVmNDlkY2E5NGNmNTM4Mjc2ZmMyNzglMjZwYWdlJTNEMQ==    第三方url,先urlencode,然后base64
+     * @apiParam {String} type=get   请求方式  get 或 post
      * @apiParam {String} params 请求参数(可选) 先json_encode,然后base64
      *
      * @apiSuccess {Number} code 状态码，值为200是正常
@@ -39,7 +39,6 @@ class Commen extends Base
     public function getUrlContent()
     {
         try{
-            $params = $this->request->get();
             $vali = [
                 'url'   => ['require'],
                 'type'  => ['require'],
@@ -49,25 +48,25 @@ class Commen extends Base
                 'type.require'  => '请求方式不能为空',
             ];
 
-            $result_val = $this->validate($params, $vali, $vali_msg);
+            $result_val = $this->validate($this->request_params, $vali, $vali_msg);
             if($result_val !== true) {
                 throw new Exception($result_val);
             }
             $data = [];
-            if(!empty($params['params'])) {
-                $data = json_decode(base64_decode($params['params']), 1);
+            if(!empty($this->request_params['params'])) {
+                $data = json_decode(base64_decode($this->request_params['params']), 1);
                 if(!$data) {
                     throw new Exception();
                 }
             }
             try{
                 $client = new Client();
-                switch (strtolower($params['type'])) {
+                switch (strtolower($this->request_params['type'])) {
                     case 'get':
-                        $res = $client->request('GET', urldecode(base64_decode($params['url'],1)).'?'.($data?http_build_query($data):''));
+                        $res = $client->request('GET', urldecode(base64_decode($this->request_params['url'],1)).'?'.($data?http_build_query($data):''));
                         break;
                     case 'post':
-                        $res = $client->request('POST', urldecode(base64_decode($params['url'],1)), ['form_params' => $data]);
+                        $res = $client->request('POST', urldecode(base64_decode($this->request_params['url'],1)), ['form_params' => $data]);
                         break;
                     default:
                         throw new Exception('请求方式不存在');
@@ -80,8 +79,7 @@ class Commen extends Base
                 throw new Exception('请求错误:'.$e->getResponse()->getStatusCode());
             }
         } catch (Exception $e) {
-            $this->code = -1;
-            $this->msg = $e->getMessage();
+            $this->response(-1, $e->getMessage());
         }
     }
 }

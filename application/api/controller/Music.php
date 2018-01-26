@@ -16,14 +16,14 @@ class Music extends Base
     private $baidu_url = 'http://tingapi.ting.baidu.com/v1/restserver/ting';
 
     /**
-     * @api {get} /Music/getList 获取音乐列表
+     * @api {get} /api/Music/getList 1.获取音乐列表
      * @apiGroup Music Land API
      *
      * @apiVersion 1.0.0
      *
-     * @apiParam {Number} page   页数
-     * @apiParam {Number} pagesize   每页多少条
-     * @apiParam {Number} type   音乐类型id 1-新歌榜,2-热歌榜,11-摇滚榜,12-爵士,16-流行,21-欧美金曲榜,22-经典老歌榜,23-情歌对唱榜,24-影视金曲榜,25-网络歌曲榜
+     * @apiParam {Number} page=1   页数
+     * @apiParam {Number} pagesize=20   每页多少条
+     * @apiParam {Number} type=1   音乐类型id 1-新歌榜,2-热歌榜,11-摇滚榜,12-爵士,16-流行,21-欧美金曲榜,22-经典老歌榜,23-情歌对唱榜,24-影视金曲榜,25-网络歌曲榜
      *
      * @apiSuccess {Number} code 状态码，值为200是正常
      * @apiSuccess {String} msg 提示信息
@@ -77,18 +77,17 @@ class Music extends Base
                 throw new Exception($result['error_message']);
             }
         } catch (Exception $e) {
-            $this->code = -1;
-            $this->msg = $e->getMessage();
+            $this->response(-1, $e->getMessage());
         }
     }
 
     /**
-     * @api {get} /Music/getCommentList 获取每日推荐音乐列表
+     * @api {get} /api/Music/getCommentList 2.获取每日推荐音乐列表
      * @apiGroup Music Land API
      *
      * @apiVersion 1.0.0
      *
-     * @apiParam {Number} pagesize   推荐条数
+     * @apiParam {Number} pagesize=20   推荐条数
      *
      * @apiSuccess {Number} code 状态码，值为200是正常
      * @apiSuccess {String} msg 提示信息
@@ -141,18 +140,17 @@ class Music extends Base
                 throw new Exception($result['error_message']);
             }
         } catch (Exception $e) {
-            $this->code = -1;
-            $this->msg = $e->getMessage();
+            $this->response(-1, $e->getMessage());
         }
     }
 
     /**
-     * @api {get} /Music/getSearch 获取搜索音乐列表
+     * @api {get} /api/Music/getSearch 3.获取搜索音乐列表
      * @apiGroup Music Land API
      *
      * @apiVersion 1.0.0
      *
-     * @apiParam {String} keyword   音乐名称
+     * @apiParam {String} keyword='the Poor'   音乐名称
      *
      * @apiSuccess {Number} code 状态码，值为200是正常
      * @apiSuccess {String} msg 提示信息
@@ -202,18 +200,17 @@ class Music extends Base
             }
 
         } catch (Exception $e) {
-            $this->code = -1;
-            $this->msg = $e->getMessage();
+            $this->response(-1, $e->getMessage());
         }
     }
 
     /**
-     * @api {get} /Music/getPlay 获取音乐播放信息
+     * @api {get} /api/Music/getPlay 4.获取音乐播放信息
      * @apiGroup Music Land API
      *
      * @apiVersion 1.0.0
      *
-     * @apiParam {Number} songid   音乐资源id
+     * @apiParam {Number} songid=267709057   音乐资源id
      *
      * @apiSuccess {Number} code 状态码，值为200是正常
      * @apiSuccess {String} msg 提示信息
@@ -285,18 +282,17 @@ class Music extends Base
             }
 
         } catch (Exception $e) {
-            $this->code = -1;
-            $this->msg = $e->getMessage();
+            $this->response(-1, $e->getMessage());
         }
     }
 
     /**
-     * @api {get} /Music/getSongWord 获取音乐歌词
+     * @api {get} /api/Music/getSongWord 5.获取音乐歌词
      * @apiGroup Music Land API
      *
      * @apiVersion 1.0.0
      *
-     * @apiParam {Number} songid   音乐资源id
+     * @apiParam {Number} songid=267709057   音乐资源id
      *
      * @apiSuccess {Number} code 状态码，值为200是正常
      * @apiSuccess {String} msg 提示信息
@@ -336,20 +332,19 @@ class Music extends Base
                 ];
 
         } catch (Exception $e) {
-            $this->code = -1;
-            $this->msg = $e->getMessage();
+            $this->response(-1, $e->getMessage());
         }
     }
 
     /**
-     * @api {get} /Music/getAuthorSongList 获取歌手的音乐列表
+     * @api {get} /api/Music/getAuthorSongList 6.获取歌手的音乐列表
      * @apiGroup Music Land API
      *
      * @apiVersion 1.0.0
      *
-     * @apiParam {Number} tinguid   歌手id
-     * @apiParam {Number} page   页数
-     * @apiParam {Number} pagesize   每页多少条
+     * @apiParam {Number} tinguid=2517   歌手id
+     * @apiParam {Number} page=1   页数
+     * @apiParam {Number} pagesize=20   每页多少条
      *
      * @apiSuccess {Number} code 状态码，值为200是正常
      * @apiSuccess {String} msg 提示信息
@@ -406,18 +401,17 @@ class Music extends Base
                 throw new Exception($result['error_message']);
             }
         } catch (Exception $e) {
-            $this->code = -1;
-            $this->msg = $e->getMessage();
+            $this->response(-1, $e->getMessage());
         }
     }
 
     /**
-     * @api {get} /Music/getAuthorInfo 获取歌手信息
+     * @api {get} /api/Music/getAuthorInfo 7.获取歌手信息
      * @apiGroup Music Land API
      *
      * @apiVersion 1.0.0
      *
-     * @apiParam {Number} tinguid   歌手id
+     * @apiParam {Number} tinguid=2517   歌手id
      *
      * @apiSuccess {Number} code 状态码，值为200是正常
      * @apiSuccess {String} msg 提示信息
@@ -475,8 +469,7 @@ class Music extends Base
             }
 
         } catch (Exception $e) {
-            $this->code = -1;
-            $this->msg = $e->getMessage();
+            $this->response(-1, $e->getMessage());
         }
     }
 }

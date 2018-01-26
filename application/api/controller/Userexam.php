@@ -18,7 +18,7 @@ class Userexam extends Base
 {
 
     /**
-     * @api {post} /Userexam/getUserIsEnd 判断用户是否存在上次未完成测试
+     * @api {post} /api/Userexam/getUserIsEnd 4.判断用户是否存在上次未完成测试
      * @apiGroup Poetries Land API
      *
      * @apiVersion 1.0.0
@@ -45,22 +45,21 @@ class Userexam extends Base
             $this->data = ['exam_id', $exam_id];
             return true;
         } catch (Exception $e) {
-            $this->code = -1;
-            $this->msg = $e->getMessage();
+            $this->response(-1, $e->getMessage());
         }
     }
 
 
     /**
-     * @api {post} /Userexam/addUserAnswer 添加用户答案
+     * @api {post} /api/Userexam/addUserAnswer 5.添加用户答案
      * @apiGroup Poetries Land API
      *
      * @apiVersion 1.0.0
      *
-     * @apiParam {Number} exam_id 考试id
-     * @apiParam {Number} qm_id   题目id
-     * @apiParam {Number} qi_id   测试号id
-     * @apiParam {String} answer  答案
+     * @apiParam {Number} exam_id=1 考试id
+     * @apiParam {Number} qm_id=10   题目id
+     * @apiParam {Number} qi_id=10   测试号id
+     * @apiParam {String} answer='fdsa'  答案
      *
      * @apiSuccess {Number} code 状态码，值为0是正常
      * @apiSuccess {String} msg 提示信息
@@ -177,18 +176,17 @@ class Userexam extends Base
             ];
             return true;
         } catch (Exception $e) {
-            $this->code = -1;
-            $this->msg = $e->getMessage();
+            $this->response(-1, $e->getMessage());
         }
     }
 
     /**
-     * @api {post} /Userexam/addUserRecord 提交测试
+     * @api {post} /api/Userexam/addUserRecord 6.提交测试
      * @apiGroup Poetries Land API
      *
      * @apiVersion 1.0.0
      *
-     * @apiParam {Number} exam_id 考试id
+     * @apiParam {Number} exam_id=1 考试id
      *
      * @apiSuccess {Number} code 状态码，值为0是正常
      * @apiSuccess {String} msg 提示信息
@@ -262,13 +260,12 @@ class Userexam extends Base
             Cache::store('redis')->handler()->delete($del_key);
             return true;
         } catch (Exception $e) {
-            $this->code = -1;
-            $this->msg = $e->getMessage();
+            $this->response(-1, $e->getMessage());
         }
     }
 
     /**
-     * @api {post} /Userexam/updateCancelExam 取消测试
+     * @api {post} /api/Userexam/updateCancelExam 8.取消测试
      * @apiGroup Poetries Land API
      *
      * @apiVersion 1.0.0
@@ -312,8 +309,7 @@ class Userexam extends Base
             Cache::store('redis')->handler()->delete($del_key);
             return true;
         } catch (Exception $e) {
-            $this->code = -1;
-            $this->msg = $e->getMessage();
+            $this->response(-1, $e->getMessage());
         }
     }
 }

@@ -7,7 +7,10 @@
  */
 namespace app\api\controller;
 
+use think\Config;
 use think\Controller;
+use think\Exception;
+use think\Request;
 use think\Response;
 
 class Base extends Controller
@@ -17,21 +20,40 @@ class Base extends Controller
     protected $data = [];
 
     protected $user_id='';
+    protected $request_params = [];
+
     public function _initialize()
     {
-        header('Access-Control-Allow-Origin:*');
+        try{
+            $this->setHeader();
+            $this->request_params = Request::instance()->param();
+
+        } catch (Exception $e) {
+            $this->response(-3, $e->getMessage());
+        }
+    }
+
+    protected function setHeader()
+    {
+        header('Access-Control-Allow-Origin: ' . Config::get('allow_origin'));
+        header('Content-type:application/json;charset=utf-8');
+    }
+
+    protected function response($code = 200, $msg = 'Success', $data = [])
+    {
+        $data = [
+            'code'  => $code? :$this->code,
+            'msg'   => $msg?  :$this->msg,
+            'data'  => $data? :$this->data,
+        ];
+        $obj = Response::create($data, input('request.format', 'json'))->code(200);
+        $obj->send();
+        exit;
     }
 
 
     public function __destruct()
     {
-        $data = [
-            'code' => $this->code,
-            'msg' => $this->msg,
-            'data' => $this->data,
-        ];
-        $obj = Response::create($data, input('request.format', 'json'))->code(200);
-        $obj->send();
-        exit;
+        $this->response();
     }
 }

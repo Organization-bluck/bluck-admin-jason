@@ -15,7 +15,7 @@ use QCloud_WeApp_SDK\Constants;
 class User extends Base
 {
     /**
-     * @api {get} /wxapi/user 获取微信小程序个人信息
+     * @api {get} /wxapi/user 3.获取微信小程序个人信息
      * @apiGroup WXAPI Land API
      *
      * @apiVersion 1.0.0

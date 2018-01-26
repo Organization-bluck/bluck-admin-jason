@@ -18,7 +18,7 @@ class Login extends Base
 {
 
     /**
-     * @api {get} /wxapi/login 微信小程序登录
+     * @api {get} /wxapi/login 1.微信小程序登录
      * @apiGroup WXAPI Land API
      *
      * @apiVersion 1.0.0

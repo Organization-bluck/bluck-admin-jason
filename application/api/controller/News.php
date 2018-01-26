@@ -8,8 +8,6 @@
 
 namespace app\api\controller;
 
-
-use Couchbase\ViewQuery;
 use GuzzleHttp\Client;
 use QL\QueryList;
 use think\Db;
@@ -17,6 +15,35 @@ use think\Exception;
 
 class News extends Base
 {
+    /**
+     * @api {get} /api/news/getList 1.获取新闻列表
+     * @apiGroup News Land API
+     *
+     * @apiVersion 1.0.0
+     *
+     * @apiParam {String} type=type 类型,top(头条，默认),shehui(社会),guonei(国内),guoji(国际),yule(娱乐),tiyu(体育)junshi(军事),keji(科技),caijing(财经),shishang(时尚)
+     *
+     * @apiSuccess {Number} code 状态码，值为200是正常
+     * @apiSuccess {String} msg 提示信息
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *      {
+     *           "code": 200,
+     *           "msg": "操作成功",
+     *           "data": [{
+     *                      'uniquekey' => 'f112fbe7d9032d4a1b6e72356d7bdf6c',
+     *                      'title' => '这个监狱里一群壮汉在织毛衣 织三条毛衣就能减1天刑还有工资领',
+     *                      'date' => '2018-01-24 16:22',
+     *                      'category' => '头条',
+     *                      'author_name' => '你若乘风',
+     *                      'url' => 'http://mini.eastday.com/mobile/180124162251708.html',
+     *                      'thumbnail_pic_s' => 'http://00.imgmini.eastday.com/mobile/20180124/20180124_ccef819a90f94a8de6b3f62fc9fb34f0_mwpm_03200403.jpg',
+     *                      'thumbnail_pic_s02' => 'f112fbe7d9032d4a1b6e72356d7bdf6c',
+     *                      'thumbnail_pic_s03' => 'f112fbe7d9032d4a1b6e72356d7bdf6c',
+     *              }]
+     *       }
+     */
     public function getList()
     {
         try{
@@ -66,18 +93,44 @@ class News extends Base
 //                        'thumbnail_pic_s02' => 'f112fbe7d9032d4a1b6e72356d7bdf6c',
 //                        'thumbnail_pic_s03' => 'f112fbe7d9032d4a1b6e72356d7bdf6c',
 //                    ];
-                    $a =
                     Db::table('news_list')->insertAll(array_values($list));
                 }
 
                 $this->data = $data['result']['data'];
             }
         } catch (Exception $e) {
-            $this->code = -1;
-            $this->msg = $e->getMessage();
+            $this->response(-1, $e->getMessage());
         }
     }
 
+    /**
+     * @api {get} /api/news/getInfo 2.获取新闻详情
+     * @apiGroup News Land API
+     *
+     * @apiVersion 1.0.0
+     *
+     * @apiParam {String} url=http://mini.eastday.com/mobile/180124162251708.html 访问页面的url
+     *
+     * @apiSuccess {Number} code 状态码，值为200是正常
+     * @apiSuccess {String} msg 提示信息
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *      {
+     *           "code": 200,
+     *           "msg": "操作成功",
+     *           "data": {
+     *                      "info":{
+     *                           'title' => '这个监狱里一群壮汉在织毛衣 织三条毛衣就能减1天刑还有工资领',
+     *                           'author' => '作者',
+     *                           'date' => '2018-01-24 16:22',
+     *                           'content' => '',
+     *                      },
+     *                      "prev_id" => "url",
+     *                      "next_id" => "url",
+     *              }
+     *       }
+     */
     public function getInfo()
     {
         try{
@@ -111,8 +164,7 @@ class News extends Base
             ];
 
         } catch (Exception $e) {
-            $this->code = -1;
-            $this->msg = $e->getMessage();
+            $this->response(-1, $e->getMessage());
         }
     }
 

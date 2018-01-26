@@ -16,7 +16,7 @@ use think\Exception;
 class Question extends Base
 {
     /**
-     * @api {get} /Question/getQuestionType 获取测试类型
+     * @api {get} /api/Question/getQuestionType 1.获取测试类型
      * @apiGroup Poetries Land API
      *
      * @apiVersion 1.0.0
@@ -43,18 +43,17 @@ class Question extends Base
             $this->data = Db::table('question_level')->field('id, t_name, count, color')->where(['status' => 0])->select();
             return true;
         } catch (Exception $e) {
-            $this->code = -1;
-            $this->msg = $e->getMessage();
+            $this->response(-1, $e->getMessage());
         }
     }
 
     /**
-     * @api {get} /Question/getRandQuestionList 获取随机测试测试
+     * @api {get} /api/Question/getRandQuestionList 2.获取随机测试测试
      * @apiGroup Poetries Land API
      *
      * @apiVersion 1.0.0
      *
-     * @apiParam {String} level_id 难度级别id
+     * @apiParam {String} level_id=1 难度级别id
      *
      * @apiSuccess {Number} code 状态码，值为200是正常
      * @apiSuccess {String} msg 提示信息
@@ -139,18 +138,17 @@ class Question extends Base
             $this->data = $exam_info;
             return true;
         } catch (Exception $e) {
-            $this->code = -1;
-            $this->msg = $e->getMessage();
+            $this->response(-1, $e->getMessage());
         }
     }
 
     /**
-     * @api {get} /Question/getQuestionList 获取测试内容
+     * @api {get} /api/Question/getQuestionList 3.获取测试内容
      * @apiGroup Poetries Land API
      *
      * @apiVersion 1.0.0
      *
-     * @apiParam {String} exam_id 考试id
+     * @apiParam {String} exam_id=1 考试id
      *
      * @apiSuccess {Number} code 状态码，值为200是正常
      * @apiSuccess {String} msg 提示信息
@@ -205,8 +203,7 @@ class Question extends Base
             $this->data = $exam_info;
             return true;
         } catch (Exception $e) {
-            $this->code = -1;
-            $this->msg = $e->getMessage();
+            $this->response(-1, $e->getMessage());
         }
     }
 }

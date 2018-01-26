@@ -251,4 +251,6 @@ return [
         'appId' => 'wxb8947075f3db73ab',
         'appSecret' => '57f1b3f38d7059e8f64d7258ae4b8bd5'
     ],
+    //授权域名
+    'allow_origin' => '*',
 ];

@@ -17,12 +17,12 @@ class Map extends Base
 {
     private $regex = '/(省|市|区|自治州|县|特别行政区)$/';
     /**
-     * @api {get} /Map/getAllCity 所有城市数据
+     * @api {get} api/Map/getAllCity 1.所有城市数据
      * @apiGroup Map Land API
      *
      * @apiVersion 1.0.0
      *
-     * @apiParam {Number} user_id   用户id
+     * @apiParam {Number} user_id=1   用户id
      *
      * @apiSuccess {Number} code 状态码，值为200是正常
      * @apiSuccess {String} msg 提示信息
@@ -50,7 +50,7 @@ class Map extends Base
     public function getAllCity()
     {
         try{
-            $uid = input('get.user_id', 1);
+            $uid = $this->request_params['user_id'];
             if(!$uid) {
                 throw new Exception('用户信息不存在');
             }
@@ -91,21 +91,19 @@ class Map extends Base
             $list = array_values($list);
 
             $this->data = compact('hot_list', 'list');
-            return true;
         } catch (Exception $e) {
-            $this->code = -1;
-            $this->msg = $e->getMessage();
+            $this->response(-1, $e->getMessage());
         }
     }
 
     /**
-     * @api {get} /Map/updateUserCity 更新用户选择地址
+     * @api {get} /api/Map/updateUserCity 3.更新用户选择地址
      * @apiGroup Map Land API
      *
      * @apiVersion 1.0.0
      *
-     * @apiParam {Number} user_id   用户id
-     * @apiParam {String[]} city_id   城市id
+     * @apiParam {Number} user_id=1   用户id
+     * @apiParam {String[]} city_id=130431   城市id
      *
      * @apiSuccess {Number} code 状态码，值为200是正常
      * @apiSuccess {String} msg 提示信息
@@ -171,18 +169,17 @@ class Map extends Base
             }
 
         } catch (Exception $e) {
-            $this->code = -1;
-            $this->msg = $e->getMessage();
+            $this->response(-1, $e->getMessage());
         }
     }
 
     /**
-     * @api {get} /Map/getUserAllCity 获取用户城市
+     * @api {get} /api/Map/getUserAllCity 2.获取用户城市
      * @apiGroup Map Land API
      *
      * @apiVersion 1.0.0
      *
-     * @apiParam {Number} user_id   用户id
+     * @apiParam {Number} user_id=1   用户id
      *
      * @apiSuccess {Number} code 状态码，值为200是正常
      * @apiSuccess {String} msg 提示信息
@@ -276,8 +273,7 @@ class Map extends Base
 
             $this->data = compact('hot_list', 'provice_list', 'rate', 'city_count', 'provice_count', 'color_josn');
         } catch (Exception $e) {
-            $this->code = -1;
-            $this->msg = $e->getMessage();
+            $this->response(-1, $e->getMessage());
         }
     }
 

@@ -1,0 +1,143 @@
+﻿
+/*去除输入框的叉号*/
+input::-webkit-search-cancel-button{
+display: none;
+}
+
+input::-ms-clear{
+display: none;
+}
+/*去除输入框的叉号*/
+
+.select_container_nw {
+    position: relative;
+    font-size: 15px;
+    font-family: 'Helvetica Neue', arial, sans-serif;
+    font-weight: 300;
+    letter-spacing: 1px;
+    display: inline-block;
+    outline:none;
+}
+
+.select_main {
+    position: relative;
+    width: inherit;
+    border: 1px solid #00bb9c;
+    cursor: pointer;
+    min-height: 23px;
+}
+
+.select_content {
+    display: block;
+    padding: 5px 0px 4px 10px;
+    overflow: hidden;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    white-space: nowrap;
+}
+
+    .select_content::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 40px;
+        border-radius: 0 2px 2px 0;
+        box-shadow: inset -55px 0 25px -20px rgba(255,255,255,0);
+    }
+
+.select_input {
+    width:0px;
+    padding-left: 10px;
+    padding-right: 32px;
+    font-size: 15px;
+    overflow: hidden;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #00bb9c;
+    z-index: 1;
+    outline:none;
+}
+
+.search_svg {
+    position: absolute;
+    right: 3px;
+    z-index: 2;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.select_arrow {
+    position: absolute;
+    right: 4px;
+    top: 0%;
+    z-index: 2;
+    transition: all 180ms ease-in-out;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+
+.select_list {
+    position: absolute;
+    left: 0px;
+    top: 100%;
+    width: inherit;
+    border: 1px solid #00bb9c;
+    border-top: none;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+    .select_list > .select_list_body ul {
+        margin: 0px;
+        padding: 0px;
+        list-style: none;
+    }
+
+        .select_list > .select_list_body ul li {
+            padding-top: 4px;
+            padding-bottom: 4px;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            overflow: hidden;
+            text-indent: 10px;
+            white-space: nowrap;
+            outline:none;
+        }
+
+            /*.select_list > .select_list_body ul li:hover {
+                background-color: #00bb9c;
+                color: #fff;
+            }*/
+
+.cast_rotate {
+    -webkit-transform-origin: 50% 50%;
+    -moz-transform-origin: 50% 50%;
+    -ms-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.select_list_body {
+    max-height: 200px;
+    overflow: hidden;
+}
+
+.list_current {
+    display: none;
+}
+
+.no_result {
+    padding-right:10px;
+    display: none;
+    text-align: center;
+    color: #00bb9c;
+}

@@ -1,0 +1,71 @@
+<link href="__STATIC__/manager/js/mCustomScrollbar/css/jquery.select.css" rel="stylesheet" />
+<link href="__STATIC__/manager/js/mCustomScrollbar/css/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
+<link href="__STATIC__/manager/js/mCustomScrollbar/iconfont/iconfont.css" rel="stylesheet" />
+<script type="text/javascript" src="__STATIC__/manager/js/mCustomScrollbar/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script type="text/javascript" src="__STATIC__/manager/js/mCustomScrollbar/js/jquery.select.js"></script>
+<form class="layui-form layui-box" style='width:80%;height: 600px;padding:25px 30px 20px 0;' action="__SELF__" data-auto="true" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">诗集名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" value='{$vo.title|default=""}' required="required" title="请输入诗集名称" placeholder="请输入诗集名称" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">诗人</label>
+        <div class="col-xs-5 form-inline" style="width:388px;padding:0 0 0 5px">
+            <div class="form-group">
+                <select name='poet_id' id="mySelect1" style="display: block;" class='layui-select'required="required" title="请选择诗人">
+                    {if !empty($poets_list)}
+                    {volist name='poets_list' id='v'}
+                    <option value="{$v.id}" {if isset($vo.poet_id) && ($vo.poet_id==$v.id)}selected{/if}>{$v.name}</option>
+                    {/volist}
+                    {/if}
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">背景图片</label>
+        <div class="layui-input-block">
+            <div style="position:relative">
+            {if isset($vo['bg_img'])}
+                <div class="uploadimage" style='background-image:url("{$vo['bg_img']}");background-repeat:no-repeat'><input type="hidden" name="bg_img" value="{$vo['bg_img']}"></div>
+            {else /}
+                <div class="uploadimage"><input type="hidden" name="cover"></div>
+            {/if}
+            <a data-file="one" data-field="bg_img" data-type="png,jpg" data-uptype="local" href="javascript:void(0)" class="uploadbutton">上传图片</a>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">内容</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入内容" title="请输入内容" class="layui-textarea"
+                      name="content">{$vo.content|default=""}</textarea>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'/><input type="hidden" name="updated_at" value="{:date('Y-m-d H:i:s')}">{/if}
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+</form>
+
+<script>
+    $('[name="bg_img"]').on('change', function () {
+        $(this).parent('.uploadimage').css('background-image', this.value).css('backgroundImage', 'url(' + this.value + ')').css('background-repeat', 'no-repeat');
+    });
+    var select2 = $("#mySelect1").select({
+        listMaxHeight: "100px",
+        themeColor: "#e6e6e6",
+        showSearch: true,
+        fontColor: "#000",
+        fontFamily: "微软雅黑",
+        fontSize: "14px",
+        opacity: false,
+    });
+</script>

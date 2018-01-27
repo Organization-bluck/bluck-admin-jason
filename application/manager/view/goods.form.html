@@ -1,0 +1,167 @@
+<form class="layui-form layui-box" style='width:80%;height: 600px;padding:25px 30px 20px 0;' action="__SELF__" data-auto="true" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" value='{$vo.title|default=""}' required="required" title="请输入商品名称" placeholder="请输入商品名称" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品类型</label>
+        <div class="col-xs-5 form-inline" style="width:388px;padding:0 0 0 5px">
+            <div class="form-group">
+                <select name='type_id' style="display: block;" class='layui-select'required="required" title="请选择商品类型">
+                    {if !empty($goods_type)}
+                    {volist name='goods_type' id='v'}
+                    <option value="{$v.id}" {if isset($vo.type_id) && ($vo.type_id==$v.id)}selected{/if}>{$v.tname}</option>
+                    {/volist}
+                    {/if}
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品品牌</label>
+        <div class="layui-input-block">
+            <input type="text" name="brand" value='{$vo.brand|default=""}' required="required" title="请输入商品品牌" placeholder="请输入商品品牌" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品市场价</label>
+        <div class="layui-input-block">
+            <input type="number" name="mprice" value='{$vo.mprice|default=""}' required="required" title="请输入商品市场价" placeholder="请输入商品市场价" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品价格</label>
+        <div class="layui-input-block">
+            <input type="number" name="price" value='{$vo.price|default=""}' required="required" title="请输入商品价格" placeholder="请输入商品价格" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">产品封面</label>
+        <div class="layui-input-block">
+            <div style="position:relative">
+                {if isset($vo['cover'])}
+                    <div class="uploadimage" style='background-image:url("{$vo['cover']}");background-repeat:no-repeat'><input type="hidden" name="cover" value="{$vo['cover']}"></div>
+                {else /}
+                    <div class="uploadimage"><input type="hidden" name="cover"></div>
+                {/if}
+                <a data-file="one" data-field="cover" data-type="png,jpg" data-uptype="local" href="javascript:void(0)" class="uploadbutton">上传图片</a>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">产品图片</label>
+        <div class="layui-input-block">
+            <div style="position:relative">
+                <style>
+                    .upload-option-button {
+                        float: right;
+                        background: rgba(0, 0, 0, 0.5);
+                        color: #fff;
+                        width: 20px;
+                        height: 20px;
+                        line-height: 20px;
+                        text-align: center;
+                        display: none
+                    }
+                    .upload-option-button:hover {
+                        text-decoration: none;
+                        color: #fff
+                    }
+                    .uploadimagemtl:hover a {
+                        display: inline-block
+                    }
+                </style>
+                {if isset($vo['img_info']) && !empty($vo['img_info'])}
+                    <?php $md5_list = ''; foreach(explode('|', trim($vo['img_info'], '|')) as $vals):?>
+                        <div class="uploadimage transition uploadimagemtl" data-tips-image="{$vals}" style='background-image: url("{$vals}");'>
+                            <a href="javascript:void(0)" class="layui-icon upload-option-button">ဆ</a>
+                        </div>
+                        <?php $md5_list.=basename(dirname($vals)).basename($vals, '.'.substr(strrchr($vals, '.'), 1)).'|';?>
+                    <?php endforeach;?>
+                    <input type="hidden" name="img_info" data-srcs="{$vo['img_info']}" data-md5="<?php echo rtrim($md5_list, '|');?>"  value="{$vo['img_info']}">
+                {else /}
+                    <input type="hidden" name="img_info">
+                {/if}
+                <a data-file="mut" data-field="img_info" data-type="png,jpg" data-uptype="local" href="javascript:void(0)">上传图片</a>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品简述</label>
+        <div class="layui-input-block">
+            <input type="text" name="subtitle" value='{$vo.subtitle|default=""}' required="required" title="请输入商品简述" placeholder="请输入商品简述" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品内容</label>
+        <div class="layui-input-block">
+            <textarea id="editor" name="context" >{$vo.context|default=""}</textarea>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'/><input type="hidden" name="update_date" value="{:date('Y-m-d H:i:s')}">{/if}
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+</form>
+
+<script>
+    $(function() {
+        CKEDITOR.replace('editor', {
+            language:       'zh-cn', // 语言: 中文，默认是英文
+            allowedContent: true,
+            removePlugins:  'elementspath', // 编辑器下面不显示元素路径
+            resize_enabled: false, // 是否允许拖动改变编辑器的大小
+            height:         '300px' // CKEditor 中编辑区的高度，不算工具栏的高度
+        });
+    });
+
+
+    $('[name="cover"]').on('change', function () {
+        $(this).parent('.uploadimage').css('background-image', this.value).css('backgroundImage', 'url(' + this.value + ')').css('background-repeat', 'no-repeat');
+    });
+    $('.uploadimagemtl').on('click', 'a', function (e) {
+        var $cur = $(this).parent();
+        $.msg.confirm('确定要移除这张图片吗？', function () {
+            var data = $cur.parent().find('input[name=img_info]').val();
+            $cur.parent().find('input[name=img_info]').val(data.replace($cur.data('tips-image'), ''));
+            $cur.remove();
+        });
+        return false;
+    });
+
+    var tpl = '<div class="uploadimage transition uploadimagemtl"><a href="javascript:void(0)" class="layui-icon upload-option-button">ဆ</a></div>';
+    $('[name="img_info"]').on('change', function () {
+        var input = this, values = [], srcs = this.value.split('|');
+        $(this).prevAll('.uploadimage').map(function () {
+            values.push($(this).attr('data-tips-image'));
+        }), $(this).prevAll('.uploadimage').remove();
+        values.reverse();
+        for (var i in srcs) {
+            values.push(srcs[i]);
+        }
+        this.value = values.join('|');
+        for (var i in values) {
+            var $tpl = $(tpl).attr('data-tips-image', values[i]).css('backgroundImage', 'url(' + values[i] + ')');
+            $tpl.data('input', input).data('srcs', values).data('index', i);
+            $tpl.on('click', 'a', function (e) {
+                e.stopPropagation();
+                var $cur = $(this).parent();
+                $.msg.confirm('确定要移除这张图片吗？', function () {
+                    var data = $cur.data('srcs');
+                    delete data[$cur.data('index')];
+                    $cur.data('input').value = data.join('|');
+                    $cur.remove();
+                });
+            });
+            $(this).before($tpl);
+        }
+    });
+
+</script>

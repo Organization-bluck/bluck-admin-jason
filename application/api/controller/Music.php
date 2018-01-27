@@ -442,7 +442,7 @@ class Music extends Base
                 'tinguid'   => input('get.tinguid/d', 0),
                 'format'    =>'json'
             ];
-            if(empty($params['songid'])) {
+            if(empty($params['tinguid'])) {
                 throw new Exception('歌手信息不存在');
             }
 
@@ -452,7 +452,7 @@ class Music extends Base
             }
             $result = json_decode($result, 1);
 
-            if(isset($result['error_code'])) {
+            if(!isset($result['error_code'])) {
                 $this->data = [
                     'nickname'      => $result['nickname'],
                     'ting_uid'      => $result['ting_uid'],

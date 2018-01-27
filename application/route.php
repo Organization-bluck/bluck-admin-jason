@@ -74,6 +74,7 @@ Route::group('api', function () {
     Route::rule('map/getUserAllCity', 'api/Map/getUserAllCity');
     Route::rule('music/getList', 'api/Music/getList');
     Route::rule('music/getSearch', 'api/Music/getSearch');
+    Route::rule('music/getAuthorInfo', 'api/Music/getAuthorInfo');
     Route::rule('music/getPlay', 'api/Music/getPlay');
     Route::rule('music/getSongWord', 'api/Music/getSongWord');
     Route::rule('music/getAuthorSongList', 'api/Music/getAuthorSongList');

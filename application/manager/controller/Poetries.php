@@ -10,6 +10,7 @@ namespace app\manager\controller;
 
 
 use controller\BasicAdmin;
+use service\DataService;
 use think\Db;
 
 class Poetries extends BasicAdmin
@@ -42,8 +43,47 @@ class Poetries extends BasicAdmin
         $result['page'] = preg_replace(['|href="(.*?)"|', '|pagination|'], ['data-open="$1" href="javascript:void(0);"', 'pagination pull-right'], $page->render());
 
         $this->assign('keyword', $keyword);
-        $this->assign('title', '企业用户激活列表');
         return view('', $result);
+    }
+
+    /**
+     * 添加诗集
+     */
+    public function add()
+    {
+        $this->title = '添加诗集';
+        return $this->_form($this->table, 'form');
+    }
+
+    /**
+     * 编辑编辑
+     * @return string
+     */
+    public function edit()
+    {
+        $this->title = '编辑诗集';
+        return $this->_form($this->table, 'form');
+    }
+
+    /**
+     * 删除
+     */
+    public function del() {
+        if (DataService::update($this->table)) {
+            $this->success("删除成功！", '');
+        }
+        $this->error("删除失败，请稍候再试！");
+    }
+
+    /**
+     * 表单处理
+     * @param $data
+     */
+    protected function _form_filter($data=[])
+    {
+        if (!$this->request->isPost()) {
+            $this->assign('poets_list', Db::table('poets')->field('id, name')->cache(true, 30)->where(['is_del' => 0])->select());
+        }
     }
 
 }

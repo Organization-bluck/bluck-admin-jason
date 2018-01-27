@@ -245,7 +245,7 @@ return [
     ],
     // 视图输出字符串内容替换
     'view_replace_str'       => [
-        '__WAP_STATIC__' => '/static/theme/wap/',
+        '__WAP_STATIC__' => '/static/theme/wap/','__STATIC__' => '/static/'
     ],
     'wechat_count' => [
         'appId' => 'wxb8947075f3db73ab',

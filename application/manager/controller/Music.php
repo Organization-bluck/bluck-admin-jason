@@ -32,34 +32,21 @@ class Music extends BasicAdmin
     }
 
     /**
-     * 分类添加
+     * 添加音乐
      */
     public function add()
     {
-        $this->title = '添加诗人信息';
+        $this->title = '添加音乐信息';
         return $this->_form($this->table, 'form');
     }
 
     /**
-     * 编辑分类
+     * 编辑音乐
      * @return string
      */
     public function edit()
     {
-        $this->title = '编辑诗人信息';
+        $this->title = '编辑音乐信息';
         return $this->_form($this->table, 'form');
-    }
-
-    /**
-     * 表单处理
-     * @param $data
-     */
-    protected function _form_filter($data)
-    {
-        if ($this->request->isPost() && isset($data['name'])) {
-            $db = Db::name($this->table)->where('name', $data['name']);
-            !empty($data['id']) && $db->where('id', 'neq', $data['id']);
-            $db->count() > 0 && $this->error('此诗人已存在！');
-        }
     }
 }

@@ -26,8 +26,6 @@ class Poetries extends BasicAdmin
      */
     public function index()
     {
-        $this->title = '诗集管理';
-
         $db = Db::name($this->table .' ps')
             ->field('ps.id, ps.title, ps.created_at, p.name')
             ->join('poets p', 'p.id=ps.poet_id')
@@ -42,6 +40,7 @@ class Poetries extends BasicAdmin
         $result['lists'] = $page->all();
         $result['page'] = preg_replace(['|href="(.*?)"|', '|pagination|'], ['data-open="$1" href="javascript:void(0);"', 'pagination pull-right'], $page->render());
 
+        $this->assign('title', '诗集列表');
         $this->assign('keyword', $keyword);
         return view('', $result);
     }
@@ -82,7 +81,7 @@ class Poetries extends BasicAdmin
     protected function _form_filter($data=[])
     {
         if (!$this->request->isPost()) {
-            $this->assign('poets_list', Db::table('poets')->field('id, name')->cache(true, 30)->where(['is_del' => 0])->select());
+            $this->assign('poets_list', Db::table('poets')->field('id, name')->cache()->where(['is_del' => 0])->select());
         }
     }
 

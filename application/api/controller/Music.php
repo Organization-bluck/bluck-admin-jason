@@ -161,9 +161,9 @@ class Music extends Base
      *           "code": 200,
      *           "msg": "操作成功",
      *           "data": {[
-     *                  "songid":"音乐资源id",
-     *                  "songname":"音乐名称",
-     *                  "artistname":"演唱人",
+     *                  "song_id":"音乐资源id",
+     *                  "title":"音乐名称",
+     *                  "author":"演唱人",
      *              ]}
      *       }
      */
@@ -189,9 +189,9 @@ class Music extends Base
                 if(!empty($result['song']) && is_array($result['song'])) {
                     $this->data = array_map(function ($v) {
                         return [
-                            'songid' => $v['songid'],
-                            'songname' => $v['songname'],
-                            'artistname' => $v['artistname'],
+                            'song_id' => $v['songid'],
+                            'title' => $v['songname'],
+                            'author' => $v['artistname'],
                         ];
                     }, $result['song']);
                 }

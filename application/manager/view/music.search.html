@@ -1,0 +1,85 @@
+{extend name='extra@admin/content'}
+{block name="content"}
+<!-- 表单搜索 开始 -->
+<div class="layui-form-item layui-inline">
+    <label class="layui-form-label">音乐名称</label>
+    <div class="layui-input-inline">
+        <input name="songname" value="{$Think.get.songname|default=''}" placeholder="请输入关键词" class="layui-input">
+    </div>
+</div>
+
+<div class="layui-form-item layui-inline music_search">
+    <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+</div>
+<!-- 表单搜索 结束 -->
+
+<form onsubmit="return false;" data-auto="true" method="post">
+    {if empty($list)}
+    <p class="help-block text-center well">没 有 记 录 哦！</p>
+    {else}
+    <input type="hidden" value="resort" name="action"/>
+    <table class="layui-table" lay-skin="line" lay-size="sm">
+        <thead>
+            <tr>
+                <th class='text-left nowrap'>音乐id</th>
+                <th class='text-left nowrap'>音乐名称</th>
+                <th class='text-left nowrap'>歌手</th>
+                <th class='text-left nowrap'>操作</th>
+            </tr>
+        </thead>
+        <tbody class="music-data">
+            {foreach $list as $key=>$vo}
+            <tr>
+                <td class='text-left nowrap'>{$vo.song_id}</td>
+                <td class='text-left nowrap'>{$vo.title}</td>
+                <td class='text-left nowrap'>{$vo.author}</td>
+                <td class='text-left nowrap'>
+                    <span class="text-explode">|</span>
+                    <a onclick="addMusic({$vo.song_id})" class="song{$vo.song_id}" data-id=0 href="javascript:void(0)">加入音乐列表</a>
+                </td>
+            </tr>
+            {/foreach}
+        </tbody>
+    </table>
+    {if isset($page)}<p>{$page}</p>{/if}
+    {/if}
+</form>
+<script>
+    $(function() {
+        $('.music_search').click(function() {
+            var songname = $('input[name=songname]').val();
+            if(!songname) {
+                return false;
+            }
+
+            $.get("{:url('music/ajaxSearchMusic')}", {songname:songname}, function (data) {
+                if(data.code == 0) {
+                    var list = '';
+                    for (var i=0;i<data.data.length; i++) {
+                        list += '<tr>';
+                        list += '<td class="text-left nowrap">'+data.data[i].song_id+'</td>';
+                        list += '<td class="text-left nowrap">'+data.data[i].title+'</td>';
+                        list += '<td class="text-left nowrap">'+data.data[i].author+'</td>';
+                        list += '<td class="text-left nowrap"><span class="text-explode">|</span><a onclick="addMusic('+data.data[i].song_id+')" data-id=0 class="song'+data.data[i].song_id+'" href="javascript:void(0)">加入音乐列表</a></td>';
+                        list += '</tr>';
+                    }
+                    $('.music-data').empty().html(list);
+                }
+            }, 'json');
+        });
+    });
+    function addMusic(id) {
+        if(!id || ($('.song'+id).data('id') == 1)) {
+            return false;
+        }
+        $.get("{:url('Music/ajaxAddMusic')}", {id:id}, function (data) {
+            if(data.code == 0) {
+                layer.msg(data.msg);
+                $('.song'+id).data('id', 1).html('已加入');
+            } else {
+                layer.msg(data.msg);
+            }
+        }, 'json');
+    }
+</script>
+{/block}

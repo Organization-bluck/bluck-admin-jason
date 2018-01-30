@@ -44,7 +44,7 @@ class FilterView
         $uriStatic = "{$uriRoot}/static";
         $replace = ['__APP__' => $appRoot, '__SELF__' => $uriSelf, '__PUBLIC__' => $uriRoot, '__STATIC__' => $uriStatic];
         $params = str_replace(array_keys($replace), array_values($replace), $params);
-//        !IS_CLI && $this->baidu($params);
+        !IS_CLI && $this->baidu($params);
     }
 
     /**

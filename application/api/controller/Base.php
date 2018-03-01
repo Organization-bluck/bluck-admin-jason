@@ -7,6 +7,8 @@
  */
 namespace app\api\controller;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use think\Config;
 use think\Controller;
 use think\Exception;
@@ -18,6 +20,7 @@ class Base extends Controller
     protected $msg = '操作成功';
     protected $code = 200;
     protected $data = [];
+    protected $error = '';
 
     protected $user_id='';
     protected $request_params = [];
@@ -37,6 +40,24 @@ class Base extends Controller
     {
         header('Access-Control-Allow-Origin: ' . Config::get('allow_origin'));
         header('Content-type:application/json;charset=utf-8');
+    }
+
+    protected function _request($url, $data = [], $requestType='GET', $is_asyn=false)
+    {
+        try{
+            $rec = new Client();
+            //是否异步
+            if($is_asyn) {
+                $result = $rec->requestAsync($requestType, config('environment.'.config('current_environment'))['java_api'].$url, ['form_params' => $data]);
+            } else {
+                $result = $rec->request($requestType, config('environment.'.config('current_environment'))['java_api'].$url, ['form_params' => $data]);
+            }
+
+            return json_decode($result->getBody(), true);
+        } catch (RequestException $e) {
+            $this->error = $e->getMessage();
+            return false;
+        }
     }
 
     protected function response($code = 200, $msg = 'Success', $data = [])

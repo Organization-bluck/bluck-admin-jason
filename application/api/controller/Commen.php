@@ -60,21 +60,20 @@ class Commen extends Base
                 }
             }
             try{
-                $client = new Client();
                 switch (strtolower($this->request_params['type'])) {
                     case 'get':
-                        $res = $client->request('GET', urldecode(base64_decode($this->request_params['url'],1)).'?'.($data?http_build_query($data):''));
+                        $this->data = $this->_request(urldecode(base64_decode($this->request_params['url'],1)).'?'.($data?http_build_query($data):''), 'GET');
                         break;
                     case 'post':
-                        $res = $client->request('POST', urldecode(base64_decode($this->request_params['url'],1)), ['form_params' => $data]);
+                        $this->data = $this->_request(urldecode(base64_decode($this->request_params['url'],1)), ['form_params' => $data], 'POST');
                         break;
                     default:
                         throw new Exception('请求方式不存在');
                 }
-                if(!$res) {
-                    throw new RequestException();
+                if(!$this->data) {
+                    throw new Exception();
                 }
-                $this->data = json_decode($res->getBody(), true);
+
             } catch (RequestException $e) {
                 throw new Exception('请求错误:'.$e->getResponse()->getStatusCode());
             }

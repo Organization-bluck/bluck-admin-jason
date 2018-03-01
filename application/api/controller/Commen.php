@@ -62,7 +62,7 @@ class Commen extends Base
             try{
                 switch (strtolower($this->request_params['type'])) {
                     case 'get':
-                        $this->data = $this->_request(urldecode(base64_decode($this->request_params['url'],1)).'?'.($data?http_build_query($data):''), 'GET');
+                        $this->data = $this->_request(urldecode(base64_decode($this->request_params['url'],1)).'?'.(!empty($data)?http_build_query($data):''), [], 'GET');
                         break;
                     case 'post':
                         $this->data = $this->_request(urldecode(base64_decode($this->request_params['url'],1)), ['form_params' => $data], 'POST');

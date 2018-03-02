@@ -44,7 +44,7 @@ class News extends Base
      *              }]
      *       }
      */
-    public function getList()
+    public function getLists()
     {
         try{
             $options = [
@@ -98,6 +98,52 @@ class News extends Base
 
                 $this->data = $data['result']['data'];
             }
+        } catch (Exception $e) {
+            $this->response(-1, $e->getMessage());
+        }
+    }
+
+    public function getList()
+    {
+        try{
+            $id = input('get.id');
+
+
+            if(!$id) { //第一次进入,获取最新的10条
+                $list = Db::table('news_list')
+                    ->field('id, uniquekey, title, date, category, author_name, url, thumbnail_pic_s, thumbnail_pic_s02, thumbnail_pic_s03')
+                    ->limit(10)
+                    ->order('id desc')
+                    ->select();
+                if($list) {
+                    $first_id = current($list)['id'];
+                    $end_id = end($list)['id'];
+                }
+            } else {
+                $type = input('get.type');
+                if(!$type) {
+                    throw new Exception('type 参数错误');
+                }
+                if($type == 1) { //往上拉去 最新
+                    $where = ['id' => ['gt', $id]];
+                } else {
+                    $where = ['id' => ['lt', $id]];
+                }
+
+                $list = Db::table('news_list')->where($where)->limit(10)->select();
+
+                if($type == 1) {
+                    $first_id = current($list)['id'];
+                } else {
+                    $end_id = end($list)['id'];
+                }
+            }
+            $this->data = [
+                'the_first' => isset($first_id)? $first_id : 0,
+                'the_end' => isset($end_id)? $end_id : 0,
+                'data' => $list
+            ];
+            $this->_request('https://www.yingshangyan.com//api/news/getList', [], 'GET', true);
         } catch (Exception $e) {
             $this->response(-1, $e->getMessage());
         }

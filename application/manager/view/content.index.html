@@ -22,9 +22,9 @@
         </div>
         <div class="col-xs-2">
             <div class="form-group">
-                <select name="type_id" class="input-sm form-control">
+                <select name="c_id" class="input-sm form-control">
                     {if !empty($content_category)}
-                    <option value=0>请选择商品类型</option>
+                    <option value=0>请选择类型</option>
                     {volist name='content_category' id='val'}
                     <option value="{$val.id}" {if $Think.get.c_id eq $val.id}selected{/if}>{$val.ctitle}</option>
                     {/volist}
@@ -59,18 +59,16 @@
         </thead>
         <tbody>
         {foreach $list as $key=>$vo}
-        <tr>
+        <tr class="tags" data-id="{$vo.id}">
             <td class='list-table-check-td'>
                 <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
             </td>
             <td class='text-center'>{$vo.title}</td>
             <td class='text-center'><img src="{$vo.img_path}" width="100" height="100" alt="{$vo.title}"></td>
-            <td class='text-center'>{$vo.price}</td>
-            <td class='text-center'>{$vo.buy_num}</td>
             <td class='text-center'>
-                {if $vo.record_status eq 0}
+                {if $vo.status eq 0}
                 <span style="color:#090">已启用</span>
-                {elseif $vo.record_status eq 1}
+                {else/}
                 <span>已禁用</span>
                 {/if}
             </td>
@@ -80,11 +78,11 @@
                 <a data-modal='{:url("$classuri/edit")}?id={$vo.id}' href="javascript:void(0)">编辑</a>
 
                 <span class="text-explode">|</span>
-                <a data-update="{$vo.id}" data-field='record_status' data-value='1' data-action='{:url("$classuri/forbid")}'
+                <a data-update="{$vo.id}" data-field='status' data-value='0' data-action='{:url("$classuri/forbid")}'
                    href="javascript:void(0)">禁用</a>
 
                 <span class="text-explode">|</span>
-                <a data-update="{$vo.id}" data-field='record_status' data-value='0' data-action='{:url("$classuri/resume")}'
+                <a data-update="{$vo.id}" data-field='status' data-value='1' data-action='{:url("$classuri/resume")}'
                    href="javascript:void(0)">启用</a>
 
                 <span class="text-explode">|</span>
@@ -97,4 +95,19 @@
     </table>
     {if isset($page)}<p>{$page}</p>{/if}
 </form>
+<script>
+    $(function() {
+        $('.tags').mouseup(function() {
+            var id = $(this).val();
+            if(!id) {
+                return false;
+            }
+            $.get("{:url('content/ajaxGetInfo')}", {id:id}, function (data) {
+                if(data.code == 0) {
+                    $
+                }
+            })
+        });
+    });
+</script>
 {/block}

@@ -106,7 +106,7 @@ class News extends Base
     public function getList()
     {
         try{
-            $id = input('get.id');
+            $id = input('get.id', 0);
 
 
             if(!$id) { //第一次进入,获取最新的10条

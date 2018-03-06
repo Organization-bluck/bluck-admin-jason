@@ -48,9 +48,9 @@ class Base extends Controller
             $rec = new Client();
             //是否异步
             if($is_asyn) {
-                $result = $rec->requestAsync($requestType, config('environment.'.config('current_environment'))['java_api'].$url, ['form_params' => $data]);
+                $result = $rec->requestAsync($requestType, $url, ['form_params' => $data]);
             } else {
-                $result = $rec->request($requestType, config('environment.'.config('current_environment'))['java_api'].$url, ['form_params' => $data]);
+                $result = $rec->request($requestType, $url, ['form_params' => $data]);
             }
 
             return json_decode($result->getBody(), true);

@@ -81,6 +81,7 @@ Route::group('api', function () {
     Route::rule('music/getCommentList', 'api/Music/getCommentList');
     Route::rule('commen/getUrlContent', 'api/Commen/getUrlContent');
     Route::rule('news/getlist', 'api/News/getlist');
+    Route::rule('news/getlists', 'api/News/getlists');
     Route::rule('news/getinfo', 'api/News/getinfo');
     Route::miss('api/Info/nofound');
 });

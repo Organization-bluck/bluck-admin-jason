@@ -143,7 +143,7 @@ class News extends Base
                 'the_end' => isset($end_id)? $end_id : 0,
                 'data' => $list
             ];
-            $this->_request('https://www.yingshangyan.com//api/news/getList', [], 'GET', true);
+            $this->_request('https://www.yingshangyan.com/api/news/getList', [], 'GET', true);
         } catch (Exception $e) {
             $this->response(-1, $e->getMessage());
         }

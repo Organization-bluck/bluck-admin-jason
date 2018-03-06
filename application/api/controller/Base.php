@@ -48,7 +48,7 @@ class Base extends Controller
             $rec = new Client();
             //是否异步
             if($is_asyn) {
-                $rec->requestAsync($requestType, $url, $data);
+                $rec->requestAsync($requestType, $url, $data)->then(1);
                 exit;
             } else {
                 $result = $rec->request($requestType, $url, $data);

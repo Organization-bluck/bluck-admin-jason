@@ -45,12 +45,14 @@ class Base extends Controller
     protected function _request($url, $data = [], $requestType='GET', $is_asyn=false)
     {
         try{
-            $rec = new Client();
+
             //是否异步
             if($is_asyn) {
-                $rec->requestAsync($requestType, $url, $data)->then(1);
+                $rec = new Client(['timeout' => 1]);
+                $rec->requestAsync($requestType, $url, $data)->wait();
                 exit;
             } else {
+                $rec = new Client();
                 $result = $rec->request($requestType, $url, $data);
             }
 

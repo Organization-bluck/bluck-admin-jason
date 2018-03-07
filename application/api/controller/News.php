@@ -46,63 +46,61 @@ class News extends Base
      */
     public function getLists()
     {
-        sleep(10);
-        Db::name('map_info')->insert(['uid' => 1, 'mc_id' => 2]);
-//        try{
-//            $options = [
-//                'headers' => [
-//                    'Authorization' => 'APPCODE d4ed0bffeefb4f6d9cdf4cc6111f7781'
-//                ],
-//            ];
-//            $host = "http://toutiao-ali.juheapi.com";
-//            $path = "/toutiao/index";
-//            $querys = "type=".input('get.type/s', 'type');
-//
-//            $client = new Client();
-//            $res = $client->request('GET', $host . $path . "?" . $querys, $options);
-//            $data = json_decode($res->getBody(), true);
-//            if(!empty($data['result']['stat']) && ($data['result']['stat'] == 1)) {
-//                $list = [];
-//                foreach ((array)$data['result']['data'] as $val) {
-//                    $list[$val['uniquekey']] = [
-//                        'uniquekey'         => $val['uniquekey'],
-//                        'title'             => $val['title'],
-//                        'date'              => $val['date'],
-//                        'category'          => $val['category'],
-//                        'author_name'       => $val['author_name'],
-//                        'url'               => $val['url'],
-//                        'thumbnail_pic_s'   => $val['thumbnail_pic_s'],
-//                        'thumbnail_pic_s02' => isset($val['thumbnail_pic_s02'])?$val['thumbnail_pic_s02']:$val['thumbnail_pic_s'],
-//                        'thumbnail_pic_s03' => isset($val['thumbnail_pic_s03'])?$val['thumbnail_pic_s03']:$val['thumbnail_pic_s'],
+        try{
+            $options = [
+                'headers' => [
+                    'Authorization' => 'APPCODE d4ed0bffeefb4f6d9cdf4cc6111f7781'
+                ],
+            ];
+            $host = "http://toutiao-ali.juheapi.com";
+            $path = "/toutiao/index";
+            $querys = "type=".input('get.type/s', 'type');
+
+            $client = new Client();
+            $res = $client->request('GET', $host . $path . "?" . $querys, $options);
+            $data = json_decode($res->getBody(), true);
+            if(!empty($data['result']['stat']) && ($data['result']['stat'] == 1)) {
+                $list = [];
+                foreach ((array)$data['result']['data'] as $val) {
+                    $list[$val['uniquekey']] = [
+                        'uniquekey'         => $val['uniquekey'],
+                        'title'             => $val['title'],
+                        'date'              => $val['date'],
+                        'category'          => $val['category'],
+                        'author_name'       => $val['author_name'],
+                        'url'               => $val['url'],
+                        'thumbnail_pic_s'   => $val['thumbnail_pic_s'],
+                        'thumbnail_pic_s02' => isset($val['thumbnail_pic_s02'])?$val['thumbnail_pic_s02']:$val['thumbnail_pic_s'],
+                        'thumbnail_pic_s03' => isset($val['thumbnail_pic_s03'])?$val['thumbnail_pic_s03']:$val['thumbnail_pic_s'],
+                    ];
+                }
+
+                $unq_list = Db::table('news_list')->where(['uniquekey' => ['IN', array_keys($list)]])->column('uniquekey');
+                if($unq_list) {
+                    foreach ((array)$unq_list as $v) {
+                        unset($list[$v]);
+                    }
+                }
+                if($list) {
+//                    $a = [
+//                        'uniquekey' => 'f112fbe7d9032d4a1b6e72356d7bdf6c',
+//                        'title' => '这个监狱里一群壮汉在织毛衣 织三条毛衣就能减1天刑还有工资领',
+//                        'date' => '2018-01-24 16:22',
+//                        'category' => '头条',
+//                        'author_name' => '你若乘风',
+//                        'url' => 'http://mini.eastday.com/mobile/180124162251708.html',
+//                        'thumbnail_pic_s' => 'http://00.imgmini.eastday.com/mobile/20180124/20180124_ccef819a90f94a8de6b3f62fc9fb34f0_mwpm_03200403.jpg',
+//                        'thumbnail_pic_s02' => 'f112fbe7d9032d4a1b6e72356d7bdf6c',
+//                        'thumbnail_pic_s03' => 'f112fbe7d9032d4a1b6e72356d7bdf6c',
 //                    ];
-//                }
-//
-//                $unq_list = Db::table('news_list')->where(['uniquekey' => ['IN', array_keys($list)]])->column('uniquekey');
-//                if($unq_list) {
-//                    foreach ((array)$unq_list as $v) {
-//                        unset($list[$v]);
-//                    }
-//                }
-//                if($list) {
-////                    $a = [
-////                        'uniquekey' => 'f112fbe7d9032d4a1b6e72356d7bdf6c',
-////                        'title' => '这个监狱里一群壮汉在织毛衣 织三条毛衣就能减1天刑还有工资领',
-////                        'date' => '2018-01-24 16:22',
-////                        'category' => '头条',
-////                        'author_name' => '你若乘风',
-////                        'url' => 'http://mini.eastday.com/mobile/180124162251708.html',
-////                        'thumbnail_pic_s' => 'http://00.imgmini.eastday.com/mobile/20180124/20180124_ccef819a90f94a8de6b3f62fc9fb34f0_mwpm_03200403.jpg',
-////                        'thumbnail_pic_s02' => 'f112fbe7d9032d4a1b6e72356d7bdf6c',
-////                        'thumbnail_pic_s03' => 'f112fbe7d9032d4a1b6e72356d7bdf6c',
-////                    ];
-//                    Db::table('news_list')->insertAll(array_values($list));
-//                }
-//
-//                $this->data = $data['result']['data'];
-//            }
-//        } catch (Exception $e) {
-//            $this->response(-1, $e->getMessage());
-//        }
+                    Db::table('news_list')->insertAll(array_values($list));
+                }
+
+                $this->data = $data['result']['data'];
+            }
+        } catch (Exception $e) {
+            $this->response(-1, $e->getMessage());
+        }
     }
 
     public function getList()
@@ -144,14 +142,8 @@ class News extends Base
                 'the_end' => isset($end_id)? $end_id : 0,
                 'data' => $list
             ];
-            $errno = $errstr = '';
-            $fp=fsockopen('www.yingshangyan.com',443, $errno, $errstr,5);
-            if(!$fp){
-                echo "$errstr ($errno)<br />\n";
-            }
-            fputs($fp,"GET /api/news/getLists\r\n");
-            fclose($fp);
-//            $this->_request('/api/news/getLists', [], 'GET', true);
+
+            $this->_request($_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].'/api/news/getLists', [], 'GET', true);
         } catch (Exception $e) {
             $this->response(-1, $e->getMessage());
         }

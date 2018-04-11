@@ -1,5 +1,3 @@
-<!--<link href="__STATIC__/manager/js/markdown/css/style.css" rel="stylesheet" />-->
-<link href="__STATIC__/manager/js/markdown/css/editormd.css" rel="stylesheet" />
 <form class="layui-form layui-box" style='width:80%;height: 600px;padding:25px 30px 20px 0;' action="__SELF__" data-auto="true" method="post">
 
     <div class="layui-form-item">
@@ -29,7 +27,7 @@
                 {if isset($vo['img_path'])}
                     <div class="uploadimage" style='background-image:url("{$vo['img_path']}");background-repeat:no-repeat'><input type="hidden" name="img_path" value="{$vo['img_path']}"></div>
                 {else /}
-                    <div class="uploadimage"><input type="hidden" name="cover"></div>
+                    <div class="uploadimage"><input type="hidden" name="img_path"></div>
                 {/if}
                 <a data-file="one" data-field="img_path" data-type="png,jpg,jpeg" data-uptype="local" href="javascript:void(0)" class="uploadbutton">上传图片</a>
             </div>
@@ -38,25 +36,38 @@
     <div class="layui-form-item">
         <label class="layui-form-label">内容标签</label>
         <div class="layui-input-block">
-            {foreach $content_tag as $tag}
-            {if !empty($vo['ctag_ids']) && in_array($authorize['id'], $vo['authorize'])}
-            <label class="think-checkbox">
-                <input type="checkbox" checked name="tid[]" value="{$tag.id}" lay-ignore> {$tag.tname}
-            </label>
-            {else}
-            <label class="think-checkbox">
-                <input type="checkbox" name="tid[]" value="{$tag.id}" lay-ignore> {$tag.tname}
-            </label>
-            {/if}
+            {foreach $content_tag as $k => $tag}
+                {if (!empty($content_tag_info)  && in_array($tag['id'], $content_tag_info))}
+                    <label class="think-checkbox">
+                        <input type="checkbox" checked="true" name="tid[]" value="{$tag.id}" lay-ignore> {$tag.tname}
+                    </label>
+                {else}
+                    <label class="think-checkbox">
+                        <input type="checkbox" name="tid[]" value="{$tag.id}" {if (empty($content_tag_info) && ($k == 0))}checked=true{/if} lay-ignore> {$tag.tname}
+                    </label>
+                {/if}
             {/foreach}
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序</label>
+        <div class="layui-input-block">
+            <input type="number" min="1" name="sort" value='{$vo.sort|default="1"}' class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">内容</label>
         <div class="layui-input-block">
             <div id="editormd">
-                <textarea style="display:none;"></textarea>
+                <textarea id="text-input" name="content"
+                          rows="10%" cols="80%">{$vo.content|default=""}</textarea>
             </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">内容输出</label>
+        <div class="layui-input-block">
+            <div id="preview"> </div>
         </div>
     </div>
 
@@ -68,25 +79,27 @@
         <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
     </div>
 </form>
-<script type="text/javascript" src="__STATIC__/manager/js/markdown/js/jquery.min.js"></script>
-<script type="text/javascript" src="__STATIC__/manager/js/markdown/js/editormd.js"></script>
+
+<script type="text/javascript" src="__STATIC__/manager/js/markdown/markdown.min.js"></script>
 <script>
     window.form.render();
 
-    var testEditor;
-
     $(function() {
+        var content = "{$vo.content|default=''}";
+        if(content) {
+            $('#preview').html(markdown.toHTML(content));
+        }
 
-        testEditor = editormd("test-editormd", {
-            width   : "90%",
-            height  : 640,
-            syncScrolling : "single",
-            path    : "__STATIC__/manager/js/markdown/lib/"
+        var $inputwrapper = $('.lia-content .inputwrapper');
+        $('#text-input').on('input propertychange',
+            function() {
+                var result = $(this).val();
+                $('#preview').html(markdown.toHTML(result));
+            });
+
+        $('[name="img_path"]').change(function() {
+            $(this).parent('.uploadimage').css('background-image', this.value).css('backgroundImage', 'url(' + this.value + ')').css('background-repeat', 'no-repeat');
         });
-    });
-
-    $('[name="img_path"]').on('change', function () {
-        $(this).parent('.uploadimage').css('background-image', this.value).css('backgroundImage', 'url(' + this.value + ')').css('background-repeat', 'no-repeat');
     });
 
 </script>

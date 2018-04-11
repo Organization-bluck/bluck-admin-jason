@@ -21,6 +21,7 @@ class Base extends Controller
     protected $code = 200;
     protected $data = [];
     protected $error = '';
+    protected $page_size = 10;
 
     protected $user_id='';
     protected $request_params = [];
@@ -61,6 +62,12 @@ class Base extends Controller
             $this->error = $e->getMessage();
             return false;
         }
+    }
+
+    //计算分页开始条数
+    protected function _getStartCount()
+    {
+        return max(0, (input('request.page/d', 0)-1)*$this->page_size);
     }
 
     protected function response($code = 200, $msg = 'Success', $data = [])

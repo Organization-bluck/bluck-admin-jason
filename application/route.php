@@ -83,5 +83,8 @@ Route::group('api', function () {
     Route::rule('news/getlist', 'api/News/getlist');
     Route::rule('news/getlists', 'api/News/getlists');
     Route::rule('news/getinfo', 'api/News/getinfo');
+    Route::rule('blog/gethomepage', 'api/blog/gethomepage');
+    Route::rule('blog/getList', 'api/blog/getList');
+    Route::rule('blog/getDetail', 'api/blog/getDetail');
     Route::miss('api/Info/nofound');
 });

@@ -35,7 +35,7 @@ class Content extends BasicAdmin
             $db->where('title', 'like', "%{$get['title']}%");
         }
         if(!empty($get['cc_id'])) {
-            $db->where('cc_id', 'eq', $get['c_id']);
+            $db->where('cc_id', 'eq', $get['cc_id']);
         }
 
         $this->assign('content_category', Db::table('content_category')->where(['status'=>1,'is_del'=>0])->select());
@@ -47,17 +47,36 @@ class Content extends BasicAdmin
      */
     public function add()
     {
-        $data = $this->request->param();
-
-        if($this->request->isPost() && isset($data['title'])) {
-            $db = Db::table($this->table)->where('title', $data['title']);
-            !empty($data['id']) && $db->where('id', 'neq', $data['id']);
-            $db->count() > 0 && $this->error('此内容名称已存在！');
+        if($this->request->isPost()) {
+            try{
+                Db::startTrans();
+                //添加主信息
+                $data = $this->request->post();
+                $insert_id = Db::table($this->table)->insert($data, false, true);
+                if(!$insert_id) {
+                    throw new Exception('添加信息失败');
+                }
+                if(empty($data['tid']) && !is_array($data['tid'])) {
+                    throw new Exception('请选择标签');
+                }
+                $tag_data = array_map(function ($v) use($insert_id) {
+                    return [
+                        'cid' => $insert_id,
+                        'tid' => $v,
+                    ];
+                }, $data['tid']);
+                if(!Db::table('content_tag_info')->insertAll($tag_data)) {
+                    throw new Exception('添加标签失败');
+                }
+                Db::commit();
+                $this->success('操作成功', '');
+            } catch (Exception $e) {
+                Db::rollback();
+                $this->error($e->getMessage());
+            }
         }
         $this->title = '添加信息';
-        $this->assign('content_category', Db::table('content_category')->where(['status'=>1,'is_del'=>0])->select());
-        $this->assign('content_tag', Db::table('content_tag')->where(['status'=>1,'is_del'=>0])->select());
-        return view('index/index', ['vo' => $data]);
+        return $this->_form($this->table, 'form');
     }
 
     /**
@@ -66,6 +85,37 @@ class Content extends BasicAdmin
      */
     public function edit()
     {
+        if($this->request->isPost()) {
+            try{
+                Db::startTrans();
+                //添加主信息
+                $data = $this->request->post();
+                $insert_id = Db::table($this->table)->update($data);
+                if(!$insert_id) {
+                    throw new Exception('更新信息失败');
+                }
+                if(empty($data['tid']) && !is_array($data['tid'])) {
+                    throw new Exception('请选择标签');
+                }
+                if(!Db::table('content_tag_info')->where(['cid' => $data['id']])->delete()) {
+                    throw new Exception('删除标签失败');
+                }
+                $tag_data = array_map(function ($v) use($insert_id) {
+                    return [
+                        'cid' => $insert_id,
+                        'tid' => $v,
+                    ];
+                }, $data['tid']);
+                if(!Db::table('content_tag_info')->insertAll($tag_data)) {
+                    throw new Exception('添加标签失败');
+                }
+                Db::commit();
+                $this->success('操作成功', '');
+            } catch (Exception $e) {
+                Db::rollback();
+                $this->error($e->getMessage());
+            }
+        }
         $this->title = '编辑信息';
         return $this->_form($this->table, 'form');
     }
@@ -102,26 +152,26 @@ class Content extends BasicAdmin
         $this->error("信息启用失败，请稍候再试！");
     }
 
-    public function ajaxGetInfo()
-    {
-        try{
-            $id = input('get.id');
-            if(!$id) {
-                throw new Exception('id不存在');
-            }
-
-            $info = Db::table('content_tag_info cti')
-                ->field('ct.tname')
-                ->join('content_tag ct'. 'ct.id = cti.tid', 'LEFT')
-                ->where(['ct.status' => ['eq', 1], 'ct.is_del' => ['eq', 0]])
-                ->select();
-
-            echo json_encode(['code' => 0, 'data' => json_encode($info)]);
-        } catch (Exception $e) {
-            echo json_encode(['code' => -1, 'msg' => $e->getMessage()]);
-        }
-        exit;
-    }
+//    public function ajaxGetInfo()
+//    {
+//        try{
+//            $id = input('get.id');
+//            if(!$id) {
+//                throw new Exception('id不存在');
+//            }
+//
+//            $info = Db::table('content_tag_info cti')
+//                ->field('ct.tname')
+//                ->join('content_tag ct'. 'ct.id = cti.tid', 'LEFT')
+//                ->where(['ct.status' => ['eq', 1], 'ct.is_del' => ['eq', 0]])
+//                ->select();
+//
+//            echo json_encode(['code' => 0, 'data' => json_encode($info)]);
+//        } catch (Exception $e) {
+//            echo json_encode(['code' => -1, 'msg' => $e->getMessage()]);
+//        }
+//        exit;
+//    }
 
     /**
      * 表单处理
@@ -129,13 +179,10 @@ class Content extends BasicAdmin
      */
     protected function _form_filter($data)
     {
-        if ($this->request->isPost() && isset($data['title'])) {
-            $db = Db::table($this->table)->where('title', $data['title']);
-            !empty($data['id']) && $db->where('id', 'neq', $data['id']);
-            $db->count() > 0 && $this->error('此内容名称已存在！');
-        } else {
-            $this->assign('content_category', Db::table('content_category')->where(['status'=>1,'is_del'=>0])->select());
-            $this->assign('content_tag', Db::table('content_tag')->where(['status'=>1,'is_del'=>0])->select());
+        if($data) {
+            $this->assign('content_tag_info', Db::table('content_tag_info')->where(['cid' => $data['id']])->column('tid'));
         }
+        $this->assign('content_category', Db::table('content_category')->where(['status'=>1,'is_del'=>0])->select());
+        $this->assign('content_tag', Db::table('content_tag')->where(['status'=>1,'is_del'=>0])->select());
     }
 }

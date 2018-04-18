@@ -15,11 +15,44 @@ use think\Exception;
 class Blog extends Base
 {
 
+    /**
+     * @api {get} /api/blog/gethomepage 1.获取首页信息
+     * @apiGroup News Land API
+     *
+     * @apiVersion 1.0.0
+     *
+     * @apiSuccess {Number} code 状态码，值为200是正常
+     * @apiSuccess {String} msg 提示信息
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *      {
+     *           "code": 200,
+     *           "msg": "操作成功",
+     *           "data": {
+     *              "list":[{
+     *                  "id":4,
+     *                  "title":"fdsa",
+     *                  "content":"fdsa",
+     *                  "create_at":"2018-04-08 08:55:36",
+     *                  "tag_list":[{
+     *                      "id":1,
+     *                      "cid":4,
+     *                      "tname":"标签名称",
+     *                  }],
+     *              }],
+     *              "category":[{
+     *                      "id":1,
+     *                      "ctitle":"分类名称",
+     *              }],
+     *          }
+     *       }
+     */
     public function getHomePage()
     {
         try{
             $list = Db::table('content')
-                ->field('id, title, content, create_at')
+                ->field('id, title, img_path, content, create_at')
                 ->where(['status' => 1, 'is_del' => 0])
                 ->limit(10)
                 ->order('create_at desc, sort desc')
@@ -53,6 +86,37 @@ class Blog extends Base
         }
     }
 
+    /**
+     * @api {get} /api/blog/getList 1.获取首页信息
+     * @apiGroup News Land API
+     *
+     * @apiVersion 1.0.0
+     *
+     * @apiParam {Number} cid=1   分类id
+     * @apiParam {Number} page=1   第几页
+     * @apiParam {Number} pagesize=10   每页多少条
+     *
+     * @apiSuccess {Number} code 状态码，值为200是正常
+     * @apiSuccess {String} msg 提示信息
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *      {
+     *           "code": 200,
+     *           "msg": "操作成功",
+     *           "data": [{
+     *                  "id":4,
+     *                  "title":"fdsa",
+     *                  "content":"fdsa",
+     *                  "create_at":"2018-04-08 08:55:36",
+     *                  "tag_list":[{
+     *                      "id":1,
+     *                      "cid":4,
+     *                      "tname":"标签名称",
+     *                  }],
+     *              }],
+     *       }
+     */
     public function getList()
     {
         try{
@@ -96,6 +160,35 @@ class Blog extends Base
         }
     }
 
+    /**
+     * @api {get} /api/blog/getList 1.获取首页信息
+     * @apiGroup News Land API
+     *
+     * @apiVersion 1.0.0
+     *
+     * @apiParam {Number} id=1   内容id
+     *
+     * @apiSuccess {Number} code 状态码，值为200是正常
+     * @apiSuccess {String} msg 提示信息
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *      {
+     *           "code": 200,
+     *           "msg": "操作成功",
+     *           "data": {
+     *                  "id":4,
+     *                  "title":"fdsa",
+     *                  "content":"fdsa",
+     *                  "create_at":"2018-04-08 08:55:36",
+     *                  "tag_list":[{
+     *                      "id":1,
+     *                      "cid":4,
+     *                      "tname":"标签名称",
+     *                  }],
+     *              }
+     *       }
+     */
     public function getDetail()
     {
         try{

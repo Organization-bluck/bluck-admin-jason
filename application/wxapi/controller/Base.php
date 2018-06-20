@@ -11,10 +11,18 @@ namespace app\wxapi\controller;
 
 use think\Controller;
 use \QCloud_WeApp_SDK\Conf;
+use think\Response;
 
 
 class Base extends Controller
 {
+    protected $msg = '操作成功';
+    protected $code = 200;
+    protected $data = [];
+    protected $error = '';
+    protected $page_size = 10;
+    protected $openid = 'aaa';
+
     protected function _initialize()
     {
         require_once  VENDOR_PATH.'/qcloud/weapp-sdk/AutoLoader.php';
@@ -51,6 +59,18 @@ class Base extends Controller
             'qcloudSecretKey'    => '1mHVTBdpmSs1uWsyoOjodCUWHm0yf6HC',
             'wxMessageToken'     => 'abcdefghijkl',
         ));
+    }
+
+    protected function response($code = 200, $msg = 'Success', $data = [])
+    {
+        $data = [
+            'code'  => $code? :$this->code,
+            'msg'   => $msg?  :$this->msg,
+            'data'  => $data? :$this->data,
+        ];
+        $obj = Response::create($data, input('request.format', 'json'))->code(200);
+        $obj->send();
+        exit;
     }
 
 }

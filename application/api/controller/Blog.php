@@ -17,7 +17,7 @@ class Blog extends Base
 
     /**
      * @api {get} /api/blog/gethomepage 1.获取首页信息
-     * @apiGroup News Land API
+     * @apiGroup Blog Land API
      *
      * @apiVersion 1.0.0
      *
@@ -44,6 +44,7 @@ class Blog extends Base
      *              "category":[{
      *                      "id":1,
      *                      "ctitle":"分类名称",
+     *                      "etitle":"英文分类名称",
      *              }],
      *          }
      *       }
@@ -79,7 +80,7 @@ class Blog extends Base
             });
             $this->data = [
                 'list'      => $list,
-                'category'  => Db::table('content_category')->field('id, ctitle')->where(['status' => 1, 'is_del' => 0])->select(),
+                'category'  => Db::table('content_category')->field('id, etitle, ctitle')->where(['status' => 1, 'is_del' => 0])->select(),
             ];
         } catch (Exception $e) {
             $this->response(-1, $e->getMessage());
@@ -87,8 +88,8 @@ class Blog extends Base
     }
 
     /**
-     * @api {get} /api/blog/getList 1.获取首页信息
-     * @apiGroup News Land API
+     * @api {get} /api/blog/getList 2.获取列表信息
+     * @apiGroup Blog Land API
      *
      * @apiVersion 1.0.0
      *
@@ -161,8 +162,8 @@ class Blog extends Base
     }
 
     /**
-     * @api {get} /api/blog/getList 1.获取首页信息
-     * @apiGroup News Land API
+     * @api {get} /api/blog/getDetail 3.获取详情信息
+     * @apiGroup Blog Land API
      *
      * @apiVersion 1.0.0
      *
@@ -185,7 +186,7 @@ class Blog extends Base
      *                      "id":1,
      *                      "cid":4,
      *                      "tname":"标签名称",
-     *                  }],
+     *                  }]
      *              }
      *       }
      */
